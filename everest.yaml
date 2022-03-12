@@ -1,0 +1,9 @@
+- Name: BrokemiaHelper
+  Version: 1.5.0
+  DLL: bin/Debug/BrokemiaHelper.dll
+  Dependencies:
+    - Name: Everest
+      Version: 1.2781.0
+  OptionalDependencies:
+    - Name: CelesteNet.Client
+      Version: 2.0.0

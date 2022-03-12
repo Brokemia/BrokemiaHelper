@@ -1,0 +1,118 @@
+# -- Entities --
+# entities.entityName.placements.name.*
+# entities.entityName.placements.description.*
+# entities.entityName.attributes.name.*
+# entities.entityName.attributes.description.*
+
+# TODO look into making it so all my entities use the first one without messing up compatibility
+mods.BrokemiaHelper.name=Brokemia Helper
+mods.brokemiahelper.name=Brokemia Helper
+
+# Floatier Space Block
+entities.BrokemiaHelper/floatierSpaceBlock.placements.name.floatier_space_block=Floatier Space Block
+entities.BrokemiaHelper/floatierSpaceBlock.placements.description.floatier_space_block=Floaty Space Block but with customizable values for many different parameters.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.disableSpawnOffset=Whether or not the entity should spawn without the random offset.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.floatinessMultiplier=A multiplier for how far the block sinks.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.tiletype=Determines the visual appearance of the wall.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.bounceBackMultiplier=A multiplier for how fast the block bounces back when dashed into.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.dashOffsetMultiplier=A multiplier for how far the block gets pushed back when dashed into.
+
+# Cassette Cassette
+entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_0=Cassette Cassette (0 - Blue)
+entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_1=Cassette Cassette (1 - Rose)
+entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_2=Cassette Cassette (2 - Bright Sun)
+entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_3=Cassette Cassette (3 - Malachite)
+entities.brokemiahelper/cassetteCassette.placements.description.cassette_cassette_0=Cassette but it blinks on and off with blue cassette blocks.
+entities.brokemiahelper/cassetteCassette.placements.description.cassette_cassette_1=Cassette but it blinks on and off with red cassette blocks.
+entities.brokemiahelper/cassetteCassette.placements.description.cassette_cassette_2=Cassette but it blinks on and off with bright sun cassette blocks.
+entities.brokemiahelper/cassetteCassette.placements.description.cassette_cassette_3=Cassette but it blinks on and off with malachite cassette blocks.
+entities.brokemiahelper/cassetteCassette.attributes.description.index=The color of the cassette cassette.
+entities.brokemiahelper/cassetteCassette.attributes.description.tempo=The tempo of the cassette entities. The first non 1 tempo cassette entity decides the tempo for all cassette entities in the room.
+
+# Cassette Dream Block
+entities.brokemiahelper/cassetteDreamBlock.placements.name.cassette_dream_block_0=Cassette Dream Block (0 - Blue)
+entities.brokemiahelper/cassetteDreamBlock.placements.name.cassette_dream_block_1=Cassette Dream Block (1 - Rose)
+entities.brokemiahelper/cassetteDreamBlock.placements.name.cassette_dream_block_2=Cassette Dream Block (2 - Bright Sun)
+entities.brokemiahelper/cassetteDreamBlock.placements.name.cassette_dream_block_3=Cassette Dream Block (3 - Malachite)
+entities.brokemiahelper/cassetteDreamBlock.placements.description.cassette_dream_block_0=Dream Block/Space Jam but it blinks on and off with blue cassette blocks.
+entities.brokemiahelper/cassetteDreamBlock.placements.description.cassette_dream_block_1=Dream Block/Space Jam but it blinks on and off with red cassette blocks.
+entities.brokemiahelper/cassetteDreamBlock.placements.description.cassette_dream_block_2=Dream Block/Space Jam but it blinks on and off with bright sun cassette blocks.
+entities.brokemiahelper/cassetteDreamBlock.placements.description.cassette_dream_block_3=Dream Block/Space Jam but it blinks on and off with malachite cassette blocks.
+entities.brokemiahelper/cassetteDreamBlock.attributes.description.index=The color of the cassette dream block.
+entities.brokemiahelper/cassetteDreamBlock.attributes.description.tempo=The tempo of the cassette entities. The first non 1 tempo cassette entity decides the tempo for all cassette entities in the room.
+
+# Cassette Intro Car
+entities.brokemiahelper/cassetteIntroCar.placements.name.cassette_intro_car_0=Cassette Intro Car (0 - Blue)
+entities.brokemiahelper/cassetteIntroCar.placements.name.cassette_intro_car_1=Cassette Intro Car (1 - Rose)
+entities.brokemiahelper/cassetteIntroCar.placements.name.cassette_intro_car_2=Cassette Intro Car (2 - Bright Sun)
+entities.brokemiahelper/cassetteIntroCar.placements.name.cassette_intro_car_3=Cassette Intro Car (3 - Malachite)
+entities.brokemiahelper/cassetteIntroCar.placements.description.cassette_intro_car_0=Intro Car but it blinks on and off with blue cassette blocks.
+entities.brokemiahelper/cassetteIntroCar.placements.description.cassette_intro_car_1=Intro Car but it blinks on and off with red cassette blocks.
+entities.brokemiahelper/cassetteIntroCar.placements.description.cassette_intro_car_2=Intro Car but it blinks on and off with bright sun cassette blocks.
+entities.brokemiahelper/cassetteIntroCar.placements.description.cassette_intro_car_3=Intro Car but it blinks on and off with malachite cassette blocks.
+entities.brokemiahelper/cassetteIntroCar.attributes.description.index=The color of the cassette intro car.
+entities.brokemiahelper/cassetteIntroCar.attributes.description.tempo=The tempo of the cassette entities. The first non 1 tempo cassette entity decides the tempo for all cassette entities in the room.
+entities.brokemiahelper/cassetteIntroCar.attributes.description.hasRoadAndBarriers=Determines whether the car should come with road and barriers.
+
+# Cassette Spinner
+entities.brokemiahelper/cassetteSpinner.placements.name.cassette_spinner_0=Cassette Spinner (0 - Blue)
+entities.brokemiahelper/cassetteSpinner.placements.name.cassette_spinner_1=Cassette Spinner (1 - Rose)
+entities.brokemiahelper/cassetteSpinner.placements.name.cassette_spinner_2=Cassette Spinner (2 - Bright Sun)
+entities.brokemiahelper/cassetteSpinner.placements.name.cassette_spinner_3=Cassette Spinner (3 - Malachite)
+entities.brokemiahelper/cassetteSpinner.placements.description.cassette_spinner_0=Spinner but it blinks on and off with blue cassette blocks.
+entities.brokemiahelper/cassetteSpinner.placements.description.cassette_spinner_1=Spinner but it blinks on and off with red cassette blocks.
+entities.brokemiahelper/cassetteSpinner.placements.description.cassette_spinner_2=Spinner but it blinks on and off with bright sun cassette blocks.
+entities.brokemiahelper/cassetteSpinner.placements.description.cassette_spinner_3=Spinner but it blinks on and off with malachite cassette blocks.
+entities.brokemiahelper/cassetteSpinner.attributes.description.index=The color of the cassette spinner.
+entities.brokemiahelper/cassetteSpinner.attributes.description.tempo=The tempo of the cassette entities. The first non 1 tempo cassette entity decides the tempo for all cassette entities in the room.
+entities.brokemiahelper/cassetteSpinner.attributes.description.attachToSolid=The spinner attaches to the surface of the entity or block, and can be moved by them.
+
+# Cave Wall
+entities.BrokemiaHelper/caveWall.placements.name.cave_wall=Cave Wall
+entities.BrokemiaHelper/caveWall.placements.description.cave_wall=A wall that disappears when the player enters it and reappears when the player leaves it.\nConnects with adjacent cave walls.
+entities.BrokemiaHelper/caveWall.attributes.description.disableSpawnOffset=Whether or not the entity should fade in during transitions.
+entities.BrokemiaHelper/caveWall.attributes.description.tiletype=Determines the visual appearance of the wall.
+
+# CelesteNet Flag Synchronizer
+entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.name.flag_synchronizer=CelesteNet Flag Synchronizer
+entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.description.flag_synchronizer=A controller that ensures a specified flag has the same value for all players on CelesteNet while they are in a room with this controller.
+entities.BrokemiaHelper/CelesteNetFlagSynchronizer.attributes.description.flag=The flag to be synchronized.
+
+# Dash Spring
+entities.BrokemiaHelper/dashSpring.placements.name.up=Dash Spring (Up)
+entities.BrokemiaHelper/dashSpringDown.placements.name.down=Dash Spring (Down)
+entities.BrokemiaHelper/wallDashSpringRight.placements.name.right=Dash Spring (Right)
+entities.BrokemiaHelper/wallDashSpringLeft.placements.name.left=Dash Spring (Left)
+entities.BrokemiaHelper/dashSpring.placements.description.up=An up-facing spring that only activates when the player is dashing.
+entities.BrokemiaHelper/dashSpringDown.placements.description.down=A down-facing spring that only activates when the player is dashing.
+entities.BrokemiaHelper/wallDashSpringRight.placements.description.right=A right-facing spring that only activates when the player is dashing.
+entities.BrokemiaHelper/wallDashSpringLeft.placements.description.left=A left-facing spring that only activates when the player is dashing.
+
+entities.BrokemiaHelper/dashSpring.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
+entities.BrokemiaHelper/dashSpringDown.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
+entities.BrokemiaHelper/wallDashSpringRight.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
+entities.BrokemiaHelper/wallDashSpringLeft.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
+
+# Move Block Barrier
+entities.BrokemiaHelper/moveBlockBarrier.placements.name.barrier=Move Block Barrier
+entities.BrokemiaHelper/moveBlockBarrier.placements.description.barrier=A barrier that blocks move blocks (both vanilla and modded) and lets everything else pass.
+entities.BrokemiaHelper/moveBlockBarrier.attributes.description.blockDebris=Determines whether the barrier also blocks the debris that fall when a move block breaks.
+
+# Non-Badeline Moving Blocks
+entities.BrokemiaHelper/nonBadelineMovingBlock.placements.name.moving_block=Non-Badeline Boss Moving Block
+entities.BrokemiaHelper/nonBadelineMovingBlock.placements.description.moving_block=A Badeline Boss Moving Block that does not require a Badeline Boss to activate.\nAlso supports multiple nodes, flag activation, and additional customization.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.tiletype=Changes the visual appearance of the block before it starts moving.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.highlightTiletype=Changes the visual appearance of the block once it starts moving.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.startFlag=A flag that activates the block when set. Leave blank for no flag required.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.startDelay=Changes the time it takes for the block to start moving after being activated.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.travelTime=Changes the time it takes for the block to travel between nodes.
+
+# Troll Strawberry
+entities.BrokemiaHelper/trollStrawberry.placements.name.normal=Troll Strawberry
+entities.BrokemiaHelper/trollStrawberry.placements.description.normal=A strawberry that pops and disappears instead of being collected.
+entities.BrokemiaHelper/trollStrawberry.placements.name.normal_winged=Troll Strawberry (Winged)
+entities.BrokemiaHelper/trollStrawberry.placements.description.normal_winged=A winged strawberry that pops and disappears instead of being collected.
+entities.BrokemiaHelper/trollStrawberry.placements.name.moon=Troll Moonberry
+entities.BrokemiaHelper/trollStrawberry.placements.description.moon=A moon berry that pops and disappears instead of being collected.
+entities.BrokemiaHelper/trollStrawberry.attributes.description.winged=The troll strawberry attempts to vertically rise offscreen when the player dashes.
+entities.BrokemiaHelper/trollStrawberry.attributes.description.moon=Makes the troll strawberry render as a moon berry.\nDoes not work with wings or nodes.

@@ -1,0 +1,20 @@
+# Dash Spring
+placements.entities.BrokemiaHelper/dashSpring.tooltips.playerCanUse=Determines whether the player is able to interact with the spring.
+
+# Floatier Space Block
+placements.entities.BrokemiaHelper/floatierSpaceBlock.tooltips.disableSpawnOffset=Whether or not the entity should spawn without the random offset.
+placements.entities.BrokemiaHelper/floatierSpaceBlock.tooltips.floatinessMultiplier=A multiplier for how far the block sinks.
+placements.entities.BrokemiaHelper/floatierSpaceBlock.tooltips.tiletype=Determines the visual appearance of the wall.
+placements.entities.BrokemiaHelper/floatierSpaceBlock.tooltips.bounceBackMultiplier=A multiplier for how fast the block bounces back when dashed into.
+placements.entities.BrokemiaHelper/floatierSpaceBlock.tooltips.dashOffsetMultiplier=A multiplier for how far the block gets pushed back when dashed into.
+
+# Cave Wall
+placements.entities.BrokemiaHelper/caveWall.tooltips.tiletype=Changes the visual appearance of the wall.
+placements.entities.BrokemiaHelper/caveWall.tooltips.disableTransitionFading=If ticked, prevents the wall from fading in during transitions.
+
+# Non-Badeline Moving Blocks
+placements.entities.BrokemiaHelper/nonBadelineMovingBlock.tooltips.tiletype=Changes the visual appearance of the block before it starts moving.
+placements.entities.BrokemiaHelper/nonBadelineMovingBlock.tooltips.highlightTiletype=Changes the visual appearance of the block once it starts moving.
+
+# Troll Strawberry
+placements.entities.BrokemiaHelper/trollStrawberry.tooltips.winged=The strawberry attempts to vertically rise offscreen when the player dashes.
