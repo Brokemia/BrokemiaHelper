@@ -110,7 +110,9 @@ namespace BrokemiaHelper {
                 Rectangle rectangle = new Rectangle(GroupBoundsMin.X / 8, GroupBoundsMin.Y / 8, (GroupBoundsMax.X - GroupBoundsMin.X) / 8 + 1, (GroupBoundsMax.Y - GroupBoundsMin.Y) / 8 + 1);
                 Level level = SceneAs<Level>();
                 Rectangle tileBounds = level.Session.MapData.TileBounds;
-                VirtualMap<char> virtualMap = level.SolidsData.Clone();
+                VirtualMap<char> backupTiles = new(level.SolidsData.Rows, level.SolidsData.Columns);
+                // Might be a better way of tracking this
+                VirtualMap<bool> tileOverwritten = new(level.SolidsData.Rows, level.SolidsData.Columns, false);
                 foreach (CaveWall item in Group) {
                     int x = (int) (item.X / 8f) - level.Session.MapData.TileBounds.X;
                     int y = (int) (item.Y / 8f - level.Session.MapData.TileBounds.Y);
@@ -118,7 +120,11 @@ namespace BrokemiaHelper {
                     int tilesY = (int) (item.Height / 8f);
                     for (int i = x; i < x + tilesX; i++) {
                         for (int j = y; j < y + tilesY; j++) {
-                            virtualMap[i, j] = item.fillTile;
+                            if(!tileOverwritten[i, j]) {
+                                backupTiles[i, j] = level.SolidsData[i, j];
+                                tileOverwritten[i, j] = true;
+                            }
+                            level.SolidsData[i, j] = item.fillTile;
                         }
                     }
                 }
@@ -129,9 +135,24 @@ namespace BrokemiaHelper {
                     int y = (int) item.Y / 8 - tileBounds.Top;
                     int tilesX = (int) item.Width / 8;
                     int tilesY = (int) item.Height / 8;
-                    item.tiles = GFX.FGAutotiler.GenerateOverlay(item.fillTile, x, y, tilesX, tilesY, virtualMap).TileGrid;
+                    item.tiles = GFX.FGAutotiler.GenerateOverlay(item.fillTile, x, y, tilesX, tilesY, level.SolidsData).TileGrid;
                     item.Add(item.tiles);
                     item.Add(new TileInterceptor(item.tiles, highPriority: false));
+                }
+
+                // Revert edits made to level.SolidsData
+                foreach (CaveWall item in Group) {
+                    int x = (int)(item.X / 8f) - level.Session.MapData.TileBounds.X;
+                    int y = (int)(item.Y / 8f - level.Session.MapData.TileBounds.Y);
+                    int tilesX = (int)(item.Width / 8f);
+                    int tilesY = (int)(item.Height / 8f);
+                    for (int i = x; i < x + tilesX; i++) {
+                        for (int j = y; j < y + tilesY; j++) {
+                            if (tileOverwritten[i, j]) {
+                                level.SolidsData[i, j] = backupTiles[i, j];
+                            }
+                        }
+                    }
                 }
             }
             TryToInitPosition();

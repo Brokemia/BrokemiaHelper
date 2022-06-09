@@ -1,21 +1,14 @@
-﻿using Celeste.Mod.UI;
-using FMOD.Studio;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Monocle;
 using Celeste;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Celeste.Mod;
 using System.Reflection;
 using MonoMod.RuntimeDetour;
-using Celeste.Pico8;
 using MonoMod.Utils;
-using System.Diagnostics;
-using System.Net;
 using Celeste.Mod.CelesteNet.Client;
 
 // WhiteBooster, CassetteZipMover, and CelesteInCeleste commented out for a mostly-functioning release
