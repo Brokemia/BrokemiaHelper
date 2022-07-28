@@ -102,6 +102,23 @@ namespace BrokemiaHelper
             CelesteNetFlagSynchronizer.Load();
             CaveWall.Load();
 
+            DecalRegistry.AddPropertyHandler("BrokemiaHelper_cassetteAnimated", (decal, attrs) => {
+                int[] beatFrames = new[] { 0, 0, 0, 0 };
+                string[] attrNames = new[] { "redFrame", "blueFrame", "yellowFrame", "greenFrame" };
+                int last = 0;
+
+                for(int i = 0; i < attrNames.Length; i++) {
+                    if(attrs[attrNames[i]] != null) {
+                        beatFrames[i] = int.Parse(attrs[attrNames[i]].Value);
+                        last = beatFrames[i];
+                    } else {
+                        beatFrames[i] = last;
+                    }
+                }
+
+                decal.Add(new DecalCassetteAnimator(beatFrames));
+            });
+
             // Stuff that doesn't always run orig(self) and therefore should run after every hook
             /* ******************************************* */
             using (new DetourContext("BrokemiaHelper")

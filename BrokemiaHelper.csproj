@@ -70,6 +70,8 @@
     <Compile Include="CaveWall.cs" />
     <Compile Include="CelesteNetFlagSynchronizer.cs" />
     <Compile Include="CelesteNet\FlagData.cs" />
+    <Compile Include="BigSpring.cs" />
+    <Compile Include="DecalCassetteAnimator.cs" />
     <Compile Include="FloatierSpaceBlock.cs" />
     <Compile Include="MoveBlockBarrier.cs" />
     <Compile Include="MoveBlockBarrierRenderer.cs" />
