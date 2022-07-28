@@ -56,7 +56,7 @@ namespace BrokemiaHelper {
         }
 
         private static void TalkComponentUI_Update(On.Celeste.TalkComponent.TalkComponentUI.orig_Update orig, TalkComponent.TalkComponentUI self) {
-            DynamicData selfData = DynamicData.For(self);
+            DynamicData selfData = new DynamicData(self);
             orig(self);
             float tempAlpha = selfData.Get<float>("alpha");
             if (self.Handler.Entity != null && self.Scene.CollideCheck<CaveWall>(self.Handler.Entity.Position)) {
@@ -73,7 +73,7 @@ namespace BrokemiaHelper {
         private static void TalkComponentUI_Awake(On.Celeste.TalkComponent.TalkComponentUI.orig_Awake orig, TalkComponent.TalkComponentUI self, Scene scene) {
             orig(self, scene);
             if (self.Handler.Entity == null || self.Scene.CollideCheck<CaveWall>(self.Handler.Entity.Position)) {
-                DynamicData selfData = DynamicData.For(self);
+                DynamicData selfData = new DynamicData(self);
                 selfData.Set("alpha", 0f);
             }
         }
