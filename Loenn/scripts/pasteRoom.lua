@@ -16,7 +16,13 @@ function script.run(room, args)
         local success, newRoom = utils.unserialize(love.system.getClipboardText())
         if success then
             newRoom = roomStruct.decode(newRoom)
-            newRoom.name = "PASTED_ROOM"
+            local duplicateCount = 1
+            local name = newRoom.name
+            while loadedState.getRoomByName(name) do
+                name = string.format(newRoom.name .. " (%d)", duplicateCount)
+                duplicateCount += 1
+            end
+            newRoom.name = name
             map_item_utils.addRoom(map, newRoom)
         end
     end
