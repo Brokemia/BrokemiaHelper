@@ -1,5 +1,5 @@
 - Name: BrokemiaHelper
-  Version: 1.5.3
+  Version: 1.5.4
   DLL: bin/Debug/BrokemiaHelper.dll
   Dependencies:
     - Name: Everest
