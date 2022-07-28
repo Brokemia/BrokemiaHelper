@@ -83,6 +83,12 @@ entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.name.flag_synchron
 entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.description.flag_synchronizer=A controller that ensures a specified flag has the same value for all players on CelesteNet while they are in a room with this controller.
 entities.BrokemiaHelper/CelesteNetFlagSynchronizer.attributes.description.flag=The flag to be synchronized.
 
+# Questionable Flag Controller
+entities.BrokemiaHelper/questionableFlagController.placements.name.controller=Questionable Flag Controller
+entities.BrokemiaHelper/questionableFlagController.placements.description.controller=A controller that sets a flag for something you really should not be setting flags for.\nFlag format is BrokemiaHelperFlag_WHICH_VALUE, with WHICH and VALUE being swapped out for their actual values.
+entities.BrokemiaHelper/questionableFlagController.attributes.description.which=What kind of flag to set.
+entities.BrokemiaHelper/questionableFlagController.attributes.description.onlyOnce=Whether the controller should only set the flag the first time it is loaded.
+
 # Dash Spring
 entities.BrokemiaHelper/dashSpring.placements.name.up=Dash Spring (Up)
 entities.BrokemiaHelper/dashSpringDown.placements.name.down=Dash Spring (Down)

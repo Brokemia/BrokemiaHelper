@@ -76,6 +76,7 @@
     <Compile Include="MoveBlockBarrier.cs" />
     <Compile Include="MoveBlockBarrierRenderer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QuestionableFlagController.cs" />
     <Compile Include="ShadowCrushBlock.cs" />
     <Compile Include="TrollStrawberry.cs" />
     <Compile Include="WhiteBooster.cs" />
