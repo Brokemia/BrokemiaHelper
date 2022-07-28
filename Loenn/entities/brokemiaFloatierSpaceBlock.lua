@@ -11,9 +11,13 @@ floatySpaceBlock.placements = {
     data = {
         tiletype = "3",
         disableSpawnOffset = false,
-        floatinessMultiplier=1.0,
         bounceBackMultiplier=1.0,
         dashOffsetMultiplier=1.0,
+        naturalFloatiness=1.0,
+        sinkAmount=12,
+        unsinkDelay=0.3,
+        sinkSpeed=1.0,
+        unsinkSpeed=1.0,
         width = 8,
         height = 8
     }

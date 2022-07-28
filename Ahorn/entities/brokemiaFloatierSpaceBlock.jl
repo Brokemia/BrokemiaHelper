@@ -2,7 +2,7 @@ module BrokemiaHelperFloatierSpaceBlock
 
 using ..Ahorn, Maple
 
-@mapdef Entity "BrokemiaHelper/floatierSpaceBlock" FloatierSpaceBlock(x::Integer, y::Integer, width::Integer=Maple.defaultBlockWidth, height::Integer=Maple.defaultBlockHeight, tiletype::String="3", disableSpawnOffset::Bool=false, floatinessMultiplier::Number=1.0, bounceBackMultiplier::Number=1.0, dashOffsetMultiplier::Number=1.0)
+@mapdef Entity "BrokemiaHelper/floatierSpaceBlock" FloatierSpaceBlock(x::Integer, y::Integer, width::Integer=Maple.defaultBlockWidth, height::Integer=Maple.defaultBlockHeight, tiletype::String="3", disableSpawnOffset::Bool=false, bounceBackMultiplier::Number=1.0, dashOffsetMultiplier::Number=1.0, naturalFloatiness::Number=1.0, sinkAmount::Integer=12, unsinkDelay::Number=0.3, sinkSpeed::Number=1.0, unsinkSpeed::Number=1.0)
 
 const placements = Ahorn.PlacementDict(
     "Floatier Space Block (BrokemiaHelper)" => Ahorn.EntityPlacement(

@@ -12,6 +12,11 @@ namespace BrokemiaHelper {
         public float floatinessBoost;
         public float dashEaseMultiplier;
         public float dashOffsetMultiplier;
+        private float naturalFloatiness;
+        private int sinkAmount;
+        private float unsinkDelay;
+        private float sinkSpeed;
+        private float unsinkSpeed;
 
         private static FieldInfo sinkTimerInfo = typeof(FloatySpaceBlock).GetField("sinkTimer", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField);
         private static FieldInfo yLerpInfo = typeof(FloatySpaceBlock).GetField("yLerp", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField);
@@ -22,9 +27,19 @@ namespace BrokemiaHelper {
         private static PropertyInfo MasterOfGroupInfo = typeof(FloatySpaceBlock).GetProperty("MasterOfGroup", BindingFlags.Public | BindingFlags.Instance | BindingFlags.SetProperty);
 
         public FloatierSpaceBlock(EntityData data, Vector2 offset) : base(data, offset) {
-            floatinessBoost = data.Float("floatinessMultiplier", 1);
+            // Just in case someone was relying on the old default, don't mess with it unless they're using new fields
+            if (data.Has("naturalFloatiness")) {
+                floatinessBoost = data.Float("floatinessMultiplier", 0);
+            } else {
+                floatinessBoost = data.Float("floatinessMultiplier", 1);
+            }
             dashEaseMultiplier = data.Float("bounceBackMultiplier", 1);
             dashOffsetMultiplier = data.Float("dashOffsetMultiplier", floatinessBoost);
+            naturalFloatiness = data.Float("naturalFloatiness", 0);
+            sinkAmount = data.Int("sinkAmount", 0);
+            unsinkDelay = data.Float("unsinkDelay", 0);
+            sinkSpeed = data.Float("sinkSpeed", 1);
+            unsinkSpeed = data.Float("unsinkSpeed", 1);
         }
 
         public static void Load() {
@@ -64,16 +79,18 @@ namespace BrokemiaHelper {
                     }
                 }
                 float sinkTimerVal = (float)sinkTimerInfo.GetValue(this);
+                // The block will keep sinking for 0.3 * floatinessBoost seconds after the player leaves
                 if (playerRiding) {
-                    sinkTimerInfo.SetValue(this, sinkTimerVal = 0.3f * floatinessBoost);
+                    sinkTimerInfo.SetValue(this, sinkTimerVal = 0.3f * floatinessBoost + unsinkDelay);
                 } else if (sinkTimerVal > 0f) {
                     sinkTimerInfo.SetValue(this, sinkTimerVal -= Engine.DeltaTime);
                 }
                 float yLerpVal = (float)yLerpInfo.GetValue(this);
+                // If the player is or just was standing on the block, make the block sink
                 if (sinkTimerVal > 0f) {
-                    yLerpInfo.SetValue(this, Calc.Approach(yLerpVal, 1f, 1f * Engine.DeltaTime));
+                    yLerpInfo.SetValue(this, Calc.Approach(yLerpVal, 1f, sinkSpeed * Engine.DeltaTime));
                 } else {
-                    yLerpInfo.SetValue(this, Calc.Approach(yLerpVal, 0f, 1f * Engine.DeltaTime));
+                    yLerpInfo.SetValue(this, Calc.Approach(yLerpVal, 0f, unsinkSpeed * Engine.DeltaTime));
                 }
                 sineWaveInfo.SetValue(this, (float)sineWaveInfo.GetValue(this) + Engine.DeltaTime);
                 dashEaseInfo.SetValue(this, Calc.Approach((float)dashEaseInfo.GetValue(this), 0f, Engine.DeltaTime * 1.5f * dashEaseMultiplier));
@@ -91,8 +108,9 @@ namespace BrokemiaHelper {
                     bool flag = (key is JumpThru jumpThru && jumpThru.HasRider()) || (key is Solid solid && solid.HasRider());
                     if ((flag || i != 0) && (!flag || i != 1)) {
                         Vector2 intialPos = move.Value;
+                        float sinkDestination = intialPos.Y + 12f * floatinessBoost + sinkAmount;
                         // This is the important line
-                        float bobbingOffset = MathHelper.Lerp(intialPos.Y, intialPos.Y + 12f * floatinessBoost, Ease.SineInOut((float)yLerpInfo.GetValue(this))) + sineWavePos * floatinessBoost;
+                        float bobbingOffset = MathHelper.Lerp(intialPos.Y, sinkDestination, Ease.SineInOut((float)yLerpInfo.GetValue(this))) + sineWavePos * floatinessBoost + sineWavePos * naturalFloatiness;
                         key.MoveToY(bobbingOffset + dashOffset.Y);
                         key.MoveToX(intialPos.X + dashOffset.X);
                     }
