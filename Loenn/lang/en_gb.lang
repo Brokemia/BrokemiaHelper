@@ -16,6 +16,11 @@ entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.floatinessMult
 entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.tiletype=Determines the visual appearance of the wall.
 entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.bounceBackMultiplier=A multiplier for how fast the block bounces back when dashed into.
 entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.dashOffsetMultiplier=A multiplier for how far the block gets pushed back when dashed into.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.naturalFloatiness=A multiplier for how much the block naturally bobs up and down.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkAmount=The number of pixels the block will sink to when a player is riding it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkDelay=How long it takes for a block to begin rising again after a player steps off of it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkSpeed=How fast the block sinks when a player is riding it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkSpeed=How fast the block rises back to its normal position after a player steps off of it.
 
 # Cassette Cassette
 entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_0=Cassette Cassette (0 - Blue)
@@ -92,6 +97,30 @@ entities.BrokemiaHelper/dashSpring.attributes.description.playerCanUse=Determine
 entities.BrokemiaHelper/dashSpringDown.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
 entities.BrokemiaHelper/wallDashSpringRight.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
 entities.BrokemiaHelper/wallDashSpringLeft.attributes.description.playerCanUse=Determines whether the player is able to interact with the dash spring.
+
+# Big Spring
+entities.BrokemiaHelper/bigSpring.placements.name.up=Big Spring (Up)
+entities.BrokemiaHelper/bigSpring.placements.name.down=Big Spring (Down)
+entities.BrokemiaHelper/bigSpring.placements.name.right=Big Spring (Right)
+entities.BrokemiaHelper/bigSpring.placements.name.left=Big Spring (Left)
+entities.BrokemiaHelper/bigSpring.placements.name.dashUp=Big Dash Spring (Up)
+entities.BrokemiaHelper/bigSpring.placements.name.dashDown=Big Dash Spring (Down)
+entities.BrokemiaHelper/bigSpring.placements.name.dashRight=Big Dash Spring (Right)
+entities.BrokemiaHelper/bigSpring.placements.name.dashLeft=Big Dash Spring (Left)
+entities.BrokemiaHelper/bigSpring.placements.description.up=An up-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.down=A down-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.right=A right-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.left=A left-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.dashUp=An up-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashDown=A down-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashRight=A right-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashLeft=A left-facing spring with a changeable size that only activates when the player is dashing.
+
+entities.BrokemiaHelper/bigSpring.attributes.description.playerCanUse=Determines whether the player is able to interact with the spring.
+entities.BrokemiaHelper/bigSpring.attributes.description.orientation=The direction the spring is facing.
+entities.BrokemiaHelper/bigSpring.attributes.description.dashSpring=Whether the player must be dashing to interact with the spring.
+entities.BrokemiaHelper/bigSpring.attributes.description.sprite=The path to the textures for the spring.\nIf empty, defaults to the usual spring or dash spring sprites.
+entities.BrokemiaHelper/bigSpring.attributes.description.horizontalTexturePadding=How much padding the spring texture has on either side.\nThe vanilla spring has 4 pixels of padding.\nOnly relevant if the texture width is different from the spring width.
 
 # Move Block Barrier
 entities.BrokemiaHelper/moveBlockBarrier.placements.name.barrier=Move Block Barrier
