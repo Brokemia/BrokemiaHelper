@@ -55,7 +55,7 @@ namespace BrokemiaHelper
             ID = new EntityID(data.Level.Name, data.ID);
             color = GetColorFromIndex(Index);
             Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
+            disabledColor = new Color(c.R / 255f * (color.R / 255f), c.G / 255f * (color.G / 255f), c.B / 255f * (color.B / 255f), 1f);
         }
 
         public static Color GetColorFromIndex(int index)
@@ -76,15 +76,11 @@ namespace BrokemiaHelper
         public override void Awake(Scene scene)
         {
             base.Awake(scene);
-            float num = Left;
-            float num2 = Right;
-            float num3 = Bottom;
-            float num4 = Top;
             color = GetColorFromIndex(Index);
             Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
-            Vector2 gOrigin = new Vector2((int)(num + (num2 - num) / 2f), (int)num4);
-            wigglerScaler = new Vector2(Calc.ClampedMap(num2 - num, 32f, 96f, 1f, 0.2f), Calc.ClampedMap(num4 - num3, 32f, 96f, 1f, 0.2f));
+            disabledColor = new Color(c.R / 255f * (color.R / 255f), c.G / 255f * (color.G / 255f), c.B / 255f * (color.B / 255f), 1f);
+            Vector2 gOrigin = new Vector2((int)(Left + (Right - Left) / 2f), (int)Top);
+            wigglerScaler = new Vector2(Calc.ClampedMap(Right - Left, 32f, 96f, 1f, 0.2f), Calc.ClampedMap(Bottom - Top, 32f, 96f, 1f, 0.2f));
             Add(wiggler = Wiggler.Create(0.3f, 3f));
             foreach (StaticMover staticMover in staticMovers)
             {
@@ -103,7 +99,7 @@ namespace BrokemiaHelper
                     spring.VisibleWhenDisabled = true;
                 }
             }
-            Vector2 groupOrigin = new Vector2((int)(num + (num2 - num) / 2f), (int)num4);
+            Vector2 groupOrigin = new Vector2((int)(Left + (Right - Left) / 2f), (int)Bottom);
             foreach (StaticMover staticMover2 in staticMovers)
             {
                 (staticMover2.Entity as Spikes)?.SetOrigins(groupOrigin);
@@ -156,19 +152,14 @@ namespace BrokemiaHelper
             Depth = !Collidable ? 5000 : -11000;
             foreach (StaticMover staticMover in staticMovers)
             {
-                staticMover.Entity.Depth = base.Depth + 1;
+                staticMover.Entity.Depth = Depth + 1;
             }
             Vector2 scale = new Vector2(1f + wiggler.Value * 0.05f * wigglerScaler.X, 1f + wiggler.Value * 0.15f * wigglerScaler.Y);
             foreach (StaticMover staticMover2 in staticMovers)
             {
-                Spikes spikes = staticMover2.Entity as Spikes;
-                if (spikes != null)
-                {
-                    foreach (Component component in spikes.Components)
-                    {
-                        Image image = component as Image;
-                        if (image != null)
-                        {
+                if (staticMover2.Entity is Spikes spikes) {
+                    foreach (Component component in spikes.Components) {
+                        if (component is Image image) {
                             image.Scale = scale;
                         }
                     }
@@ -209,16 +200,16 @@ namespace BrokemiaHelper
             float wobbleEase = (float)wobbleEaseInfo.GetValue(this);
             float scaleFactor = 0f;
             int num2 = 16;
-            for (int i = 2; (float)i < num - 2f; i += num2)
+            for (int i = 2; i < num - 2f; i += num2)
             {
                 float num3 = (float)LerpInfo.Invoke(this, new object[] { LineAmplitudeInfo.Invoke(this, new object[] { wobbleFrom + offset, i }), LineAmplitudeInfo.Invoke(this, new object[] { wobbleTo + offset, i }), wobbleEase });
-                if ((float)(i + num2) >= num)
+                if ((i + num2) >= num)
                 {
                     num3 = 0f;
                 }
-                float num4 = Math.Min(num2, num - 2f - (float)i);
+                float num4 = Math.Min(num2, num - 2f - i);
                 Vector2 vector2 = from + value * i + vector * scaleFactor;
-                Vector2 vector3 = from + value * ((float)i + num4) + vector * num3;
+                Vector2 vector3 = from + value * (i + num4) + vector * num3;
                 Draw.Line(vector2 - vector, vector3 - vector, color2);
                 Draw.Line(vector2 - vector * 2f, vector3 - vector * 2f, color2);
                 Draw.Line(vector2, vector3, lineColor);
@@ -231,12 +222,11 @@ namespace BrokemiaHelper
             Activated = Collidable = activated;
             UpdateVisualState();
             playerHasDreamDashInfo.SetValue(this, activated);
-            if (activated)
-            {
+            if (activated) {
                 EnableStaticMovers();
-                return;
+            } else {
+                DisableStaticMovers();
             }
-            DisableStaticMovers();
         }
 
         public void Finish()
