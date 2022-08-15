@@ -24,8 +24,7 @@ namespace BrokemiaHelper {
             VersionBrokemiaHelper,
             SystemMemoryMB,
             PlayMode,
-            Platform,
-            UserName
+            Platform
         }
 
         private QuestionableFlags which;
@@ -81,8 +80,6 @@ namespace BrokemiaHelper {
                     return FLAG_PREFIX + "PlayMode_" + Celeste.Celeste.PlayMode;
                 case QuestionableFlags.Platform:
                     return FLAG_PREFIX + "Platform_" + PlatformHelper.Current;
-                case QuestionableFlags.UserName:
-                    return FLAG_PREFIX + "UserName_" + Environment.UserName;
             }
             throw new Exception("Unsupported flag in QuestionableFlagController");
         }

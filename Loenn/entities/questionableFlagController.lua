@@ -13,8 +13,7 @@ local flagOptions = {
     "VersionBrokemiaHelper",
     "SystemMemoryMB",
     "PlayMode",
-    "Platform",
-    "UserName"
+    "Platform"
 }
 
 questionable.name = "BrokemiaHelper/questionableFlagController"
