@@ -5,18 +5,18 @@ using ..Ahorn, Maple
 @mapdef Entity "brokemiahelper/shadowCrushBlock" ShadowKevin(x::Integer, y::Integer, width::Integer=Maple.defaultBlockWidth, height::Integer=Maple.defaultBlockHeight, axes::String="both", chillout::Bool=false)
 
 const placements = Ahorn.PlacementDict(
-    "Shadow Kevin (Both)" => Ahorn.EntityPlacement(
+    "Shadow Kevin (Both, BrokemiaHelper)" => Ahorn.EntityPlacement(
         ShadowKevin,
         "rectangle"
     ),
-    "Shadow Kevin (Vertical)" => Ahorn.EntityPlacement(
+    "Shadow Kevin (Vertical, BrokemiaHelper)" => Ahorn.EntityPlacement(
         ShadowKevin,
         "rectangle",
         Dict{String, Any}(
             "axes" => "vertical"
         )
     ),
-    "Shadow Kevin (Horizontal)" => Ahorn.EntityPlacement(
+    "Shadow Kevin (Horizontal, BrokemiaHelper)" => Ahorn.EntityPlacement(
         ShadowKevin,
         "rectangle",
         Dict{String, Any}(

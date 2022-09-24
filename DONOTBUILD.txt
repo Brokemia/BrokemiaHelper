@@ -1,0 +1,5 @@
+Ahorn\entities\boosterwhite.jl
+Ahorn\entities\cassetteZipMover.jl
+Ahorn\entities\shadowCrushBlock.jl
+Ahorn\triggers\cursedteleporttrigger.jl
+Loenn\entities\Not ported\

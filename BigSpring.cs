@@ -22,12 +22,18 @@ namespace BrokemiaHelper {
 
         private int horizontalTexturePadding;
 
+        private bool slicedSprite;
+
+        // left, center, right
+        private int[] sliceWidths;
+
         public BigSpring(EntityData data, Vector2 offset)
             : base(data.Position + offset, data.Int("orientation", 0) == 3 ? Orientations.Floor : (Orientations)data.Int("orientation", 0), data.Bool("playerCanUse", true)) {
             Orientation = (Orientations)data.Int("orientation", 0);
             dashSpring = data.Bool("dashSpring", false);
             width = data.Width;
             horizontalTexturePadding = data.Int("horizontalTexturePadding", 4);
+            slicedSprite = data.Bool("slicedSprite", false);
             DynData<Spring> selfData = new(this);
 
             // Only one other player collider is added so it can easily be removed
@@ -44,6 +50,11 @@ namespace BrokemiaHelper {
             sprite.Origin.X = sprite.Width / 2f;
             sprite.Origin.Y = sprite.Height;
             sprite.Scale = new((width - horizontalTexturePadding) / (sprite.Width - horizontalTexturePadding), 1);
+
+            if(slicedSprite) {
+                sprite.Visible = false;
+            }
+
             switch (Orientation) {
                 case Orientations.Floor:
                     Collider = new Hitbox(width, 6f, -width / 2, -6f);
@@ -104,6 +115,14 @@ namespace BrokemiaHelper {
                 return;
             }
             throw new Exception("Orientation not supported!");
+        }
+
+        public override void Render() {
+            base.Render();
+            if(slicedSprite) {
+                Sprite sprite = (Sprite)spriteInfo.GetValue(this);
+                sprite.DrawSubrect(Vector2.Zero, new Rectangle(horizontalTexturePadding, 0, sliceWidths[0], (int)sprite.Height));
+            }
         }
     }
 }

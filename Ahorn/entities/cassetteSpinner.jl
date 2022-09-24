@@ -12,7 +12,7 @@ colorNames = Dict{String, Int}(
 )
 
 const placements = Ahorn.PlacementDict(
-    "Cassette Spinner ($index - $color)" => Ahorn.EntityPlacement(
+    "Cassette Spinner ($index - $color, BrokemiaHelper)" => Ahorn.EntityPlacement(
         CassetteSpinner,
         "point",
         Dict{String, Any}(
