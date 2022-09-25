@@ -42,6 +42,14 @@ local function vinePresetData(preset, highlightColor, bodyColor, shadowColor, th
         hangingVines = true,
         hangingVineFrequency = 0.02,
         hangingVineSlack = 30,
+        wiggles = false,
+        animateWiggles = true,
+        wiggleAmount = 2.0,
+        wiggleFrequency = 0.125,
+        wiggleSpeed = 1.0,
+        animateSnake = false,
+        snakeSpeed = 20.0,
+        snakeLength = 50,
         highlightColor = highlightColor,
         bodyColor = bodyColor,
         shadowColor = shadowColor,
@@ -109,7 +117,15 @@ do_it_for_the_vine.fieldOrder = {
     "hangingVines",
     "hangingVineColor",
     "hangingVineFrequency",
-    "hangingVineSlack"
+    "hangingVineSlack",
+    "wiggles",
+    "animateWiggles",
+    "wiggleAmount",
+    "wiggleFrequency",
+    "wiggleSpeed",
+    "animateSnake",
+    "snakeSpeed",
+    "snakeLength",
 }
 
 do_it_for_the_vine.ignoredFields = {"_id", "_name", "preset"}
@@ -164,6 +180,13 @@ do_it_for_the_vine.fieldInformation = {
     },
     hangingVineSlack = {
         fieldType = "integer"
+    },
+    wiggleAmount = {
+        minimumValue = 0.0
+    },
+    snakeLength = {
+        fieldType = "integer",
+        minimumValue = 0
     },
     highlightColor = {
         fieldType = "color"

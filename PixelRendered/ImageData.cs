@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BrokemiaHelper {
+namespace BrokemiaHelper.PixelRendered {
     /// <summary>
     /// This is poorly named. I just use this to edit Color data and then create a Texture2D out of it.
     /// </summary>
@@ -28,6 +23,12 @@ namespace BrokemiaHelper {
 
         public Color[] GetData() {
             return data;
+        }
+
+        public void ClearData() {
+            for(int i = 0; i < data.Length; i++) {
+                data[i] = default;
+            }
         }
     }
 }
