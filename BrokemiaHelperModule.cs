@@ -101,6 +101,7 @@ namespace BrokemiaHelper
             FloatierSpaceBlock.Load();
             CelesteNetFlagSynchronizer.Load();
             CaveWall.Load();
+            PersistentMiniTextbox.Load();
 
             DecalRegistry.AddPropertyHandler("BrokemiaHelper_cassetteAnimated", (decal, attrs) => {
                 int[] beatFrames = new[] { 0, 0, 0, 0 };
@@ -224,13 +225,14 @@ namespace BrokemiaHelper
 
         void Player_Update(On.Celeste.Player.orig_Update orig, Player self)
         {
-            DynData<Player> selfData = new DynData<Player>(self);
-            float? shadowTimer = selfData.Get<float?>("brokemiaHelperShadowTimer");
-            bool wasInvincible = SaveData.Instance.Assists.Invincible;
-            if (shadowTimer.HasValue && shadowTimer.Value > 0) {
-                selfData.Set<float?>("brokemiaHelperShadowTimer", shadowTimer - Engine.DeltaTime);
-                SaveData.Instance.Assists.Invincible = true;
-            }
+            // FIXME Triggers activate inside the orig Player.Update, so this code broke invincibility variant triggers
+            //DynData<Player> selfData = new DynData<Player>(self);
+            //float? shadowTimer = selfData.Get<float?>("brokemiaHelperShadowTimer");
+            //bool wasInvincible = SaveData.Instance.Assists.Invincible;
+            //if (shadowTimer.HasValue && shadowTimer.Value > 0) {
+            //    selfData.Set<float?>("brokemiaHelperShadowTimer", shadowTimer - Engine.DeltaTime);
+            //    SaveData.Instance.Assists.Invincible = true;
+            //}
             if (self.StateMachine.State == 5 && self.LastBooster is FakeBooster currBooster)
             {
                 MethodInfo CorrectDashPrecision = typeof(Player).GetMethod("CorrectDashPrecision", BindingFlags.NonPublic | BindingFlags.InvokeMethod | BindingFlags.Instance);
@@ -260,7 +262,7 @@ namespace BrokemiaHelper
                 self.Speed.X = movement.X;
             }
             orig(self);
-            SaveData.Instance.Assists.Invincible = wasInvincible;
+            //SaveData.Instance.Assists.Invincible = wasInvincible;
         }
 
         // TODO Add back in but don't desync TAS
@@ -364,6 +366,7 @@ namespace BrokemiaHelper
             FloatierSpaceBlock.Unload();
             CelesteNetFlagSynchronizer.Unload();
             CaveWall.Unload();
+            PersistentMiniTextbox.Unload();
             //On.Celeste.Player.RedDashCoroutine -= Player_RedDashCoroutine;
         }
 

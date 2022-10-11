@@ -74,10 +74,13 @@
     <Compile Include="Cassette\DecalCassetteAnimator.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FloatierSpaceBlock.cs" />
+    <Compile Include="PersistentMiniTextbox.cs" />
+    <Compile Include="PersistentMiniTextboxTrigger.cs" />
     <Compile Include="PixelRendered\ImageData.cs" />
     <Compile Include="MoveBlockBarrier.cs" />
     <Compile Include="MoveBlockBarrierRenderer.cs" />
     <Compile Include="PixelRendered\PixelComponent.cs" />
+    <Compile Include="PixelRendered\RWLizard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionableFlagController.cs" />
     <Compile Include="ShadowCrushBlock.cs" />

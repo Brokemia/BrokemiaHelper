@@ -203,3 +203,11 @@ entities.BrokemiaHelper/vineinator.attributes.description.shadowColor=The color 
 entities.BrokemiaHelper/vineinator.attributes.description.thornColor=The color of the thorns.
 entities.BrokemiaHelper/vineinator.attributes.description.hangingVineColor=The color of the hanging vines.
 entities.BrokemiaHelper/vineinator.attributes.description.depth=The depth of the vines.\nBackground decals are 9000. Foreground decals are -10500.
+
+# Rain World Lizard
+entities.BrokemiaHelper/rwLizard.placements.name.lizard=Rain World Lizard
+
+# Persistent Mini Textbox Trigger
+triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.name.trigger=Persistent MiniTextbox
+triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.description.trigger=Spawns a mini textbox that doesn't vanish automatically.
+triggers.BrokemiaHelper/persistentMiniTextboxTrigger.attributes.description.time=The time before the textbox closes. Use -1 for it to stay open forever.
