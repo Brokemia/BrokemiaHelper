@@ -211,3 +211,17 @@ entities.BrokemiaHelper/rwLizard.placements.name.lizard=Rain World Lizard
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.name.trigger=Persistent MiniTextbox
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.description.trigger=Spawns a mini textbox that doesn't vanish automatically.
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.attributes.description.time=The time before the textbox closes. Use -1 for it to stay open forever.
+
+# Tron State Trigger
+triggers.BrokemiaHelper/tronStateTrigger.placements.name.trigger=Start Tron State
+triggers.BrokemiaHelper/tronStateTrigger.placements.description.trigger=Enters the player into a feather-like state where they leave a trail of light that kills them if they touch it.
+triggers.BrokemiaHelper/tronStateTrigger.attributes.description.onlyOnce=Whether the trigger should only work once per room load.
+triggers.BrokemiaHelper/tronStateTrigger.attributes.description.targetSpeed=The normal speed you move in the Tron state.
+triggers.BrokemiaHelper/tronStateTrigger.attributes.description.slowSpeed=The slowest speed you move in the Tron state.
+triggers.BrokemiaHelper/tronStateTrigger.attributes.description.maxSpeed=The maximum speed you move in the Tron state.
+triggers.BrokemiaHelper/tronStateTrigger.attributes.description.color=The color you turn in the Tron state.
+
+# Tron State Untrigger
+triggers.BrokemiaHelper/tronStateUntrigger.placements.name.trigger=Stop Tron State
+triggers.BrokemiaHelper/tronStateUntrigger.placements.description.trigger=Changes the player from the Tron state back into the normal state.
+triggers.BrokemiaHelper/tronStateUntrigger.attributes.description.onlyOnce=Whether the trigger should only work once per room load.

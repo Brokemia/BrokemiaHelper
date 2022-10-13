@@ -10,8 +10,10 @@ using System.Reflection;
 using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using Celeste.Mod.CelesteNet.Client;
+using System.Runtime.CompilerServices;
 
 // WhiteBooster, CassetteZipMover, and CelesteInCeleste commented out for a mostly-functioning release
+[assembly: IgnoresAccessChecksTo("Celeste")]
 namespace BrokemiaHelper
 {
     public class BrokemiaHelperModule : EverestModule
@@ -102,6 +104,7 @@ namespace BrokemiaHelper
             CelesteNetFlagSynchronizer.Load();
             CaveWall.Load();
             PersistentMiniTextbox.Load();
+            TronState.Load();
 
             DecalRegistry.AddPropertyHandler("BrokemiaHelper_cassetteAnimated", (decal, attrs) => {
                 int[] beatFrames = new[] { 0, 0, 0, 0 };
@@ -263,6 +266,9 @@ namespace BrokemiaHelper
             }
             orig(self);
             //SaveData.Instance.Assists.Invincible = wasInvincible;
+            if(self.StateMachine.State != TronState.TronStateID) {
+                TronState.trailFade = Calc.Approach(TronState.trailFade, 0, 2 * Engine.DeltaTime);
+            }
         }
 
         // TODO Add back in but don't desync TAS
@@ -367,6 +373,7 @@ namespace BrokemiaHelper
             CelesteNetFlagSynchronizer.Unload();
             CaveWall.Unload();
             PersistentMiniTextbox.Unload();
+            TronState.Unload();
             //On.Celeste.Player.RedDashCoroutine -= Player_RedDashCoroutine;
         }
 

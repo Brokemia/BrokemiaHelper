@@ -19,6 +19,7 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <LangVersion>Latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <Optimize>true</Optimize>
@@ -27,8 +28,13 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <LangVersion>Latest</LangVersion>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Celeste">
+      <HintPath>lib-stripped\Celeste.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="CelesteNet.Client">
       <HintPath>..\_hidden\CelesteNet.Client.dll</HintPath>
       <Private>False</Private>
@@ -53,10 +59,6 @@
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
       <HintPath>..\..\MonoMod.RuntimeDetour.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Celeste">
-      <HintPath>..\..\Celeste.exe</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.Utils">
@@ -86,6 +88,9 @@
     <Compile Include="ShadowCrushBlock.cs" />
     <Compile Include="TrollStrawberry.cs" />
     <Compile Include="PixelRendered\Vineinator.cs" />
+    <Compile Include="TronState.cs" />
+    <Compile Include="TronStateTrigger.cs" />
+    <Compile Include="TronStateUntrigger.cs" />
     <Compile Include="WhiteBooster.cs" />
     <Compile Include="FakeBooster.cs" />
     <Compile Include="Cassette\CassetteIntroCar.cs" />
