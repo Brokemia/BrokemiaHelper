@@ -1,5 +1,8 @@
 ﻿using Celeste;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -57,6 +60,41 @@ namespace BrokemiaHelper {
             }
             machine.SetCallbacks(nextIndex, () => onUpdate(machine.Entity as Player), _coroutine, () => begin(machine.Entity as Player), () => end(machine.Entity as Player));
             return nextIndex;
+        }
+
+        // https://github.com/CommunalHelper/CommunalHelper/blob/c6660d9c4a2c6c280c14b89e1806f3c3ae72d286/src/Utils/Extensions.cs#L379-L408
+        public static void ForceAdd(this EntityList list, params Entity[] entities) {
+            Scene scene = list.Scene;
+
+            foreach (Entity entity in entities) {
+                if (!list.current.Contains(entity)) {
+                    list.current.Add(entity);
+                    list.entities.Add(entity);
+                    if (scene != null) {
+                        scene.TagLists.EntityAdded(entity);
+                        scene.Tracker.EntityAdded(entity);
+                        entity.Added(scene);
+                    }
+                }
+            }
+
+            list.entities.Sort(EntityList.CompareDepth);
+
+            foreach (Entity entity in entities) {
+                if (entity.Scene == scene)
+                    entity.Awake(scene);
+            }
+        }
+
+        public static void DrawJustifiedClipped(this MTexture self, Vector2 position, Vector2 justify, Rectangle clip) {
+            self.DrawJustifiedClipped(position, justify, clip, Vector2.One);
+        }
+
+        public static void DrawJustifiedClipped(this MTexture self, Vector2 position, Vector2 justify, Rectangle clip, Vector2 scale, float rotation = 0) {
+            float scaleFix = self.ScaleFix;
+            Draw.SpriteBatch.Draw(self.Texture.Texture_Safe, position,
+                new Rectangle(self.ClipRect.X + clip.X, self.ClipRect.Y + clip.Y, clip.Width, clip.Height),
+                Color.White, rotation, (new Vector2(self.Width * justify.X, self.Height * justify.Y) - self.DrawOffset) / scaleFix, scaleFix * scale, SpriteEffects.None, 0f);
         }
     }
 }

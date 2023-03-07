@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Sprites>
+	<BrokemiaHelper_DandelionSmall path="deco/BrokemiaHelper/dandelion/" start="idle">
+		<Justify x=".5" y="1" />
+		<Loop id="idle" path="small" frames="0-1" delay="0.6"/>
+		<Loop id="scatter" path="small" frames="2-3" delay="0.6"/>
+	</BrokemiaHelper_DandelionSmall>
+	<BrokemiaHelper_DandelionLarge path="deco/BrokemiaHelper/dandelion/" start="idle">
+		<Justify x=".5" y="1" />
+		<Loop id="idle" path="large" frames="0-1" delay="0.6"/>
+		<Loop id="scatter" path="large" frames="2-4,3" delay="0.6"/>
+	</BrokemiaHelper_DandelionLarge>
+</Sprites>
