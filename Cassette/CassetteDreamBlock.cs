@@ -123,7 +123,7 @@ namespace BrokemiaHelper
             }
             else if (!Activated && Collidable)
             {
-                Player player = SceneAs<Level>().Entities.FindFirst<Player>();
+                Player player = Scene.Tracker.GetEntity<Player>();
                 if (!NoWiggleBlockedCheck() && (player == null || !Equals(playerDreamBlockInfo.GetValue(player))))
                 {
                     Collidable = false;

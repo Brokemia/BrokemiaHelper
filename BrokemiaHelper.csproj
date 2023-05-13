@@ -43,6 +43,14 @@
       <HintPath>..\_hidden\CelesteNet.Shared.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>..\..\Mono.Cecil.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoMod">
+      <HintPath>..\..\MonoMod.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="FNA">
@@ -67,6 +75,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BrokemiaHelperSession.cs" />
+    <Compile Include="Carcinization.cs" />
     <Compile Include="CelesteNet\BrokemiaHelperCelesteNetComponent.cs" />
     <Compile Include="BrokemiaHelperModule.cs" />
     <Compile Include="CaveWall.cs" />
@@ -74,8 +84,16 @@
     <Compile Include="CelesteNet\FlagData.cs" />
     <Compile Include="BigSpring.cs" />
     <Compile Include="Cassette\DecalCassetteAnimator.cs" />
+    <Compile Include="Deco\Dandelion.cs" />
+    <Compile Include="Deco\FlowerField.cs" />
+    <Compile Include="Deco\Noodle.cs" />
+    <Compile Include="Deco\NoodleEmitter.cs" />
+    <Compile Include="Deco\PlayerMotionComponent.cs" />
+    <Compile Include="Deco\TallGrass.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FloatierSpaceBlock.cs" />
+    <Compile Include="ImagineAWorldWhereTextboxesDoNotHavePortraitsThisIsTheTwilightZone.cs" />
+    <Compile Include="NeutralDeathPenaltyTrigger.cs" />
     <Compile Include="PersistentMiniTextbox.cs" />
     <Compile Include="PersistentMiniTextboxTrigger.cs" />
     <Compile Include="PixelRendered\ImageData.cs" />
@@ -86,11 +104,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionableFlagController.cs" />
     <Compile Include="ShadowCrushBlock.cs" />
+    <Compile Include="TheoRespawn.cs" />
     <Compile Include="TrollStrawberry.cs" />
     <Compile Include="PixelRendered\Vineinator.cs" />
     <Compile Include="TronState.cs" />
     <Compile Include="TronStateTrigger.cs" />
     <Compile Include="TronStateUntrigger.cs" />
+    <Compile Include="UniversalAccelerator.cs" />
     <Compile Include="WhiteBooster.cs" />
     <Compile Include="FakeBooster.cs" />
     <Compile Include="Cassette\CassetteIntroCar.cs" />
@@ -104,6 +124,9 @@
     <Compile Include="NonBadelineMovingBlock.cs" />
     <Compile Include="CursedTeleportTrigger.cs" />
     <Compile Include="BrokemiaHelperMapDataProcessor.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CarcinizationHelper.zip" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

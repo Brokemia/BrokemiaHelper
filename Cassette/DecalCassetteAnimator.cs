@@ -7,7 +7,7 @@ namespace BrokemiaHelper {
     public class DecalCassetteAnimator : Component {
 
         private Decal Decal => (Decal)Entity;
-        private DynamicData decalData, cassetteManagerData;
+        private CassetteBlockManager manager;
         private int[] beatFrames;
         private bool firstUpdate = true;
 
@@ -15,29 +15,23 @@ namespace BrokemiaHelper {
             beatFrames = frames;
         }
 
-        public override void Added(Entity entity) {
-            base.Added(entity);
-            decalData = new(Entity);
-        }
-
         public override void Update() {
             if(firstUpdate) {
                 if (Scene.Tracker.GetEntity<CassetteBlockManager>() is CassetteBlockManager manager) {
-                    cassetteManagerData = new(manager);
+                    this.manager = manager;
                 }
                 firstUpdate = false;
             }
             base.Update();
-            if(cassetteManagerData != null) {
-                int index = cassetteManagerData.Get<int>("currentIndex");
-                if(((int)decalData.Get<float>("frame")) != beatFrames[index]) {
-                    decalData.Set("animated", true);
+            if(manager != null) {
+                if(((int)Decal.frame) != beatFrames[manager.currentIndex]) {
+                    Decal.animated = true;
                 } else {
-                    decalData.Set("animated", false);
-                    decalData.Set("frame", (float)beatFrames[index]);
+                    Decal.animated = false;
+                    Decal.frame = beatFrames[manager.currentIndex];
                 }
             } else {
-                decalData.Set("animated", false);
+                Decal.animated = false;
             }
         }
 

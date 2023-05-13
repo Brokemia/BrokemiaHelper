@@ -6,6 +6,7 @@ using Monocle;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace BrokemiaHelper {
     [CustomEntity("BrokemiaHelper/trollStrawberry")]
@@ -41,10 +42,14 @@ namespace BrokemiaHelper {
 
         public bool ReturnHomeWhenLost = true;
 
+        private bool reappear;
+
         protected bool waitingOnSeeds;
 
         protected List<GenericStrawberrySeed> seeds;
 
+        private bool hadWings;
+        
         public bool Winged {
             get;
             private set;
@@ -75,8 +80,9 @@ namespace BrokemiaHelper {
         public TrollStrawberry(EntityData data, Vector2 offset, EntityID gid) {
             ID = gid;
             Position = (start = data.Position + offset);
-            Winged = data.Bool("winged", false);
+            hadWings = Winged = data.Bool("winged", false);
             Moon = data.Bool("moon");
+            reappear = data.Bool("reappear", false);
             Depth = -100;
             Collider = new Hitbox(14f, 14f, -7f, -7f);
             Add(new PlayerCollider(new Action<Player>(OnPlayer), null, null));
@@ -244,7 +250,9 @@ namespace BrokemiaHelper {
                 Follower.Leader.LoseFollower(Follower);
             }
             Session session = (Scene as Level).Session;
-            session.DoNotLoad.Add(ID);
+            if (!reappear) {
+                session.DoNotLoad.Add(ID);
+            }
             session.UpdateLevelStartDashes();
             Add(new Coroutine(CollectRoutine(collectIndex), true));
         }
@@ -275,10 +283,11 @@ namespace BrokemiaHelper {
             Visible = true;
             Collidable = true;
             bloom.Visible = (light.Visible = true);
-            (base.Scene as Level).Session.SetFlag(gotSeedFlag);
+            (Scene as Level).Session.SetFlag(gotSeedFlag);
         }
 
         private IEnumerator CollectRoutine(int collectIndex) {
+            Level level = SceneAs<Level>();
             Tag = Tags.TransitionUpdate;
             Depth = -2000010;
             Audio.Play("event:/game/general/seed_poof", Position);
@@ -288,15 +297,49 @@ namespace BrokemiaHelper {
             Input.Rumble(RumbleStrength.Medium, RumbleLength.Medium);
             for (int i = 0; i < 6; i++) {
                 float num = Calc.Random.NextFloat((float)Math.PI * 2f);
-                SceneAs<Level>().ParticlesFG.Emit(StrawberrySeed.P_Burst, 1, Position + Calc.AngleToVector(num, 4f), Vector2.Zero, num);
+                level.ParticlesFG.Emit(StrawberrySeed.P_Burst, 1, Position + Calc.AngleToVector(num, 4f), Vector2.Zero, num);
             }
+            
+            var bloomWasVisible = bloom.Visible;
+            var lightWasVisible = light.Visible;
+            bloom.Visible = false;
+            light.Visible = false;
             Visible = false;
+            // Yes I know it's invisible, I just don't want to work out the timing manually
             sprite.Play("collect");
             while (sprite.Animating) {
                 yield return null;
             }
-            //Scene.Add(new StrawberryPoints(Position, isGhostBerry, collectIndex, Moon));
-            RemoveSelf();
+            if (!reappear || ID.Level != level.Session.Level) {
+                RemoveSelf();
+                yield break;
+            }
+
+            // Reappear            
+            yield return 0.2f;
+            bloom.Visible = bloomWasVisible;
+            light.Visible = lightWasVisible;
+            Position = start;
+            sprite.Reverse("collect", true);
+            while (sprite.Animating) {
+                yield return null;
+            }
+            Winged = hadWings;
+            if (Winged) {
+                sprite.Play("flap");
+            } else {
+                sprite.Play("idle");
+            }
+            Audio.Play("event:/game/general/seed_reappear", Position, "count", 0);
+            sprite.Scale = Vector2.One;
+            Visible = true;
+            Collidable = true;
+            collected = false;
+            Follower.Leader = null;
+            Depth = -100;
+            bloom.Visible = bloomWasVisible;
+            light.Visible = lightWasVisible;
+            level.Displacement.AddBurst(Position, 0.2f, 8f, 28f, 0.2f);
         }
 
         private void OnLoseLeader() {

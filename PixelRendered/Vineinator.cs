@@ -1,9 +1,12 @@
 ﻿using Celeste;
+using Celeste.Mod;
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
+using System.Text;
 
 // TODO add ability to do custom "features" (like flowers) that are images and can be placed with a given frequency and option for random flipping/rotation/color/etc
 
@@ -13,8 +16,10 @@ namespace BrokemiaHelper.PixelRendered {
         private PixelComponent pixelComponent;
 
         private EntityID id;
-        private string seed;
+        private string seedString;
+        private int seed;
         private Random rand;
+        private bool legacyRNG;
 
         private Vector2[] waypoints;
         private Color highlightColor;
@@ -62,7 +67,7 @@ namespace BrokemiaHelper.PixelRendered {
         public Vineinator(EntityData data, Vector2 offset, EntityID id) : base(data.Position + offset) {
             waypoints = data.NodesWithPosition(new());
             this.id = id;
-            seed = data.Attr("seed", "");
+            seedString = data.Attr("seed", "");
             minSize = data.Float("minSize", 3) / 2;
             maxSize = data.Float("maxSize", 8) / 2;
             sizeSpeed = data.Float("sizeSpeed", 0.2f) / 2;
@@ -97,12 +102,14 @@ namespace BrokemiaHelper.PixelRendered {
             thornColor = Calc.HexToColor(data.Attr("thornColor", "1d5455"));
             hangingVineColor = Calc.HexToColor(data.Attr("hangingVineColor", "040815"));
             Depth = data.Int("depth", Depths.BGDecals);
+            legacyRNG = data.Bool("legacyRNG", false);
 
             Add(pixelComponent = new PixelComponent());
         }
 
         public override void Added(Scene scene) {
             base.Added(scene);
+            seed = GetSeed();
             DrawVines();
             pixelComponent.CommitChunks();
         }
@@ -118,7 +125,7 @@ namespace BrokemiaHelper.PixelRendered {
 
         private void DrawVines() {
             // Measure length of the vine
-            if(vineLength < 0) {
+            if (vineLength < 0) {
                 bool oldSnake = animateSnake;
                 animateSnake = false;
                 vineLength = 0;
@@ -126,7 +133,7 @@ namespace BrokemiaHelper.PixelRendered {
                 animateSnake = oldSnake;
             }
 
-            Random featureRand = new(GetSeed() + 1);
+            Random featureRand = new(seed + 1);
 
             Point? vineStart = null;
             DrawPass((x, y, size, dir) => {
@@ -150,11 +157,11 @@ namespace BrokemiaHelper.PixelRendered {
             float sizeMult = (minHighlightProportion + maxHighlightProportion) / 2;
             DrawPass((x, y, size, dir) => {
                 Vector2 sunward = dir.Rotate((float)Math.PI / 2);
-                if(sunward.Y > 0) {
+                if (sunward.Y > 0) {
                     sunward *= -1;
                 }
                 int highlightOffset = (int)Math.Ceiling(size - size * sizeMult);
-                pixelComponent.DrawCircle(x + (int)(sunward.X * highlightOffset), y + (int)(sunward.Y * highlightOffset), size * sizeMult , highlightColor);
+                pixelComponent.DrawCircle(x + (int)(sunward.X * highlightOffset), y + (int)(sunward.Y * highlightOffset), size * sizeMult, highlightColor);
 
                 // Vary size;
                 if (featureRand.Next(2) == 0) {
@@ -170,7 +177,7 @@ namespace BrokemiaHelper.PixelRendered {
                     float thornSize = minThornSize + featureRand.NextFloat(maxThornSize - minThornSize);
                     // Rotated randomly up to 45 degrees off a tangent
                     Vector2 thornDir = dir.Rotate((featureRand.Next(2) == 0 ? -1 : 1) * (float)Math.PI / 2 + featureRand.NextAngle() / 8);
-                    for(int thornProgress = 0; thornSize > 0; thornSize -= thornShrinkSpeed, thornProgress++) {
+                    for (int thornProgress = 0; thornSize > 0; thornSize -= thornShrinkSpeed, thornProgress++) {
                         pixelComponent.DrawSquare((int)(x + thornDir.X * (size - .3f + thornProgress) - thornSize / 2), (int)(y + thornDir.Y * (size - .3f + thornProgress) - thornSize / 2), (int)Math.Ceiling(thornSize), thornColor);
                     }
                 });
@@ -184,7 +191,7 @@ namespace BrokemiaHelper.PixelRendered {
         /// </summary>
         /// <param name="drawAction">Takes x, y, size, and direction of travel</param>
         private void DrawPass(Action<int, int, float, Vector2> drawAction) {
-            rand = new(GetSeed());
+            rand = new(seed);
             float time = SceneAs<Level>().TimeActive;
             float wiggleOffset = rand.NextAngle();
             int snakeStart = rand.Next(vineLength < 0 ? 0 : vineLength) + (int)(time * snakeSpeed);
@@ -196,7 +203,7 @@ namespace BrokemiaHelper.PixelRendered {
             direction.Normalize();
             float size = (minSize + maxSize) / 2;
             int progress = 0;
-            
+
             while (target < waypoints.Length) {
                 int iterations = 0;
                 while ((pos - waypoints[target]).LengthSquared() > 2) {
@@ -220,7 +227,7 @@ namespace BrokemiaHelper.PixelRendered {
                     direction.Normalize();
 
                     // Vary size;
-                    if(rand.Next(2) == 0) {
+                    if (rand.Next(2) == 0) {
                         size = Math.Min(maxSize, size + sizeSpeed);
                     } else {
                         size = Math.Max(minSize, size - sizeSpeed);
@@ -237,7 +244,11 @@ namespace BrokemiaHelper.PixelRendered {
         }
 
         private int GetSeed() {
-            return string.IsNullOrWhiteSpace(seed) ? (SceneAs<Level>().Session.Level + "_vine").GetHashCode() + id.ID : seed.GetHashCode();
+            if(legacyRNG) {
+                return string.IsNullOrWhiteSpace(seedString) ? (SceneAs<Level>().Session.Level + "_vine").WindowsHashCode() + id.ID : seedString.WindowsHashCode();
+            }
+            return string.IsNullOrWhiteSpace(seedString) ? Calc.Random.Next() :
+                seedString.SimpleHash();
         }
     }
 }

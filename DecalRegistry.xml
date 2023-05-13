@@ -1,0 +1,5 @@
+<decals>
+  <decal path="BrokemiaHelper/windchimes/chime">
+    <BrokemiaHelper_playerMotion idle="0" active="1" delay="1" />
+  </decal>
+</decals>

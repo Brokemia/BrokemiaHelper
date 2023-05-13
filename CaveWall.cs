@@ -3,7 +3,6 @@ using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
-using System;
 using System.Collections.Generic;
 
 namespace BrokemiaHelper {
@@ -22,6 +21,8 @@ namespace BrokemiaHelper {
         private bool fadeOut;
         private bool fadeIn = true;
 
+        private bool deadBodyCollided;
+
         public bool FadeIn => fadeIn;
 
         private EffectCutout cutout;
@@ -33,6 +34,8 @@ namespace BrokemiaHelper {
         private CaveWall master;
 
         private bool awake;
+
+        private bool blocksDisplacement;
 
         public List<CaveWall> Group;
 
@@ -53,6 +56,20 @@ namespace BrokemiaHelper {
         public static void Load() {
             On.Celeste.TalkComponent.TalkComponentUI.Awake += TalkComponentUI_Awake;
             On.Celeste.TalkComponent.TalkComponentUI.Update += TalkComponentUI_Update;
+            On.Celeste.PlayerDeadBody.Awake += PlayerDeadBody_Awake;
+        }
+
+        private static void PlayerDeadBody_Awake(On.Celeste.PlayerDeadBody.orig_Awake orig, PlayerDeadBody self, Scene scene) {
+            orig(self, scene);
+            // The wall shouldn't fade out when a player dies in it
+            foreach(CaveWall caveWall in scene.Tracker.GetEntities<CaveWall>()) {
+                if (self.Position.X >= caveWall.Left
+                    && self.Position.X <= caveWall.Right
+                    && self.Position.Y >= caveWall.Top
+                    && self.Position.Y <= caveWall.Bottom) {
+                    (caveWall.MasterOfGroup ? caveWall : caveWall.master).deadBodyCollided = true;
+                }
+            }
         }
 
         private static void TalkComponentUI_Update(On.Celeste.TalkComponent.TalkComponentUI.orig_Update orig, TalkComponent.TalkComponentUI self) {
@@ -81,19 +98,31 @@ namespace BrokemiaHelper {
         public static void Unload() {
             On.Celeste.TalkComponent.TalkComponentUI.Awake -= TalkComponentUI_Awake;
             On.Celeste.TalkComponent.TalkComponentUI.Update -= TalkComponentUI_Update;
+            On.Celeste.PlayerDeadBody.Awake -= PlayerDeadBody_Awake;
         }
 
-        public CaveWall(Vector2 position, char tile, float width, float height, bool disableTransitionFading)
+        public CaveWall(Vector2 position, char tile, float width, float height, bool disableTransitionFading, bool blockDisplacement)
             : base(position) {
+            blocksDisplacement = blockDisplacement;
             fillTile = tile;
             this.disableTransitionFading = disableTransitionFading;
             Collider = new Hitbox(width, height);
             Depth = -13001;
             Add(cutout = new EffectCutout());
+            Add(new DisplacementRenderHook(RenderDisplacement));
         }
 
         public CaveWall(EntityData data, Vector2 offset)
-            : this(data.Position + offset, data.Char("tiletype", '3'), data.Width, data.Height, data.Bool("disableTransitionFading", false)) {
+            : this(data.Position + offset, data.Char("tiletype", '3'), data.Width, data.Height, data.Bool("disableTransitionFading", false), data.Bool("blockDisplacement", true)) {
+        }
+
+        public void RenderDisplacement() {
+            if (!MasterOfGroup) return;
+            foreach (var caveWall in Group) {
+                if (caveWall.Alpha > 0.2 && caveWall.blocksDisplacement) {
+                    Draw.Rect(caveWall.X, caveWall.Y, caveWall.Width, caveWall.Height, new Color(0.5f, 0.5f, 0f, 1f));
+                }
+            }
         }
 
         public override void Awake(Scene scene) {
@@ -161,11 +190,11 @@ namespace BrokemiaHelper {
                 tiles.Alpha = 0f;
                 fadeOut = true;
                 fadeIn = false;
-                cutout.Visible = false;
+                cutout.Alpha = 0;
             }
 
             if (!disableTransitionFading) {
-                TransitionListener transitionListener = new TransitionListener();
+                TransitionListener transitionListener = new();
                 transitionListener.OnOut = OnTransitionOut;
                 transitionListener.OnOutBegin = OnTransitionOutBegin;
                 transitionListener.OnIn = OnTransitionIn;
@@ -272,7 +301,7 @@ namespace BrokemiaHelper {
                     tiles.Alpha = 1;
                 }
             }
-
+            
             if (MasterOfGroup) {
                 Player player = null;
                 foreach (CaveWall entity in Group) {
@@ -281,19 +310,8 @@ namespace BrokemiaHelper {
                         break;
                     }
                 }
-                // The wall shouldn't fade out when a player dies in it
-                PlayerDeadBody playerDeadBody = null;
-                bool bodyCollided = false;
-                if ((playerDeadBody = SceneAs<Level>().Entities.FindFirst<PlayerDeadBody>()) != null) {
-                    foreach (CaveWall entity in Group) {
-                        bodyCollided = playerDeadBody.Position.X >= entity.Left && playerDeadBody.Position.X <= entity.Right && playerDeadBody.Position.Y >= entity.Top && playerDeadBody.Position.Y <= entity.Bottom;
-                        if (bodyCollided) {
-                            break;
-                        }
-                    }
-                }
 
-                if ((player != null && player.StateMachine.State != Player.StDreamDash) || bodyCollided) {
+                if ((player != null && player.StateMachine.State != Player.StDreamDash) || deadBodyCollided) {
                     fadeOut = true;
                     fadeIn = false;
                     foreach (CaveWall entity in Group) {

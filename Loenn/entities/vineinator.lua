@@ -13,7 +13,7 @@ local presetFillColors = {
 local do_it_for_the_vine = {}
 
 do_it_for_the_vine.name = "BrokemiaHelper/vineinator"
-do_it_for_the_vine.depth = 0
+do_it_for_the_vine.depth = -10500--function(room, entity) return entity.depth or 9000 end
 --do_it_for_the_vine.color = (room, entity -> presetFillColors[entity.preset or "green"])
 do_it_for_the_vine.color = function(room, entity) return presetFillColors[entity.preset or "green"] end
 do_it_for_the_vine.nodeLimits = {1, -1}
@@ -125,7 +125,7 @@ do_it_for_the_vine.fieldOrder = {
     "wiggleSpeed",
     "animateSnake",
     "snakeSpeed",
-    "snakeLength",
+    "snakeLength"
 }
 
 do_it_for_the_vine.ignoredFields = {"_id", "_name", "preset"}

@@ -15,7 +15,10 @@ end
 springUp.placements = {
     name = "up",
     data = {
-        playerCanUse = true
+        spritePath = "objects/BrokemiaHelper/dashSpring/",
+        playerCanUse = true,
+        ignoreHoldables = false,
+        ignoreRedBoosters = false
     }
 }
 
@@ -32,7 +35,10 @@ end
 springDown.placements = {
     name = "down",
     data = {
-        playerCanUse = true
+        spritePath = "objects/BrokemiaHelper/dashSpring/",
+        playerCanUse = true,
+        ignoreHoldables = false,
+        ignoreRedBoosters = false
     }
 }
 
@@ -49,7 +55,10 @@ end
 springLeft.placements = {
     name = "left",
     data = {
-        playerCanUse = true
+        spritePath = "objects/BrokemiaHelper/dashSpring/",
+        playerCanUse = true,
+        ignoreHoldables = false,
+        ignoreRedBoosters = false
     }
 }
 
@@ -66,7 +75,10 @@ end
 springRight.placements = {
     name = "right",
     data = {
-        playerCanUse = true
+        spritePath = "objects/BrokemiaHelper/dashSpring/",
+        playerCanUse = true,
+        ignoreHoldables = false,
+        ignoreRedBoosters = false
     }
 }
 

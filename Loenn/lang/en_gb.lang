@@ -112,6 +112,10 @@ entities.BrokemiaHelper/dashSpring.attributes.description.ignoreRedBoosters=Dete
 entities.BrokemiaHelper/dashSpringDown.attributes.description.ignoreRedBoosters=Determines whether the player is able to interact with the dash spring while in the red booster state.
 entities.BrokemiaHelper/wallDashSpringRight.attributes.description.ignoreRedBoosters=Determines whether the player is able to interact with the dash spring while in the red booster state.
 entities.BrokemiaHelper/wallDashSpringLeft.attributes.description.ignoreRedBoosters=Determines whether the player is able to interact with the dash spring while in the red booster state.
+entities.BrokemiaHelper/dashSpring.attributes.description.spritePath=The path to the textures for the spring.
+entities.BrokemiaHelper/dashSpringDown.attributes.description.spritePath=The path to the textures for the spring.
+entities.BrokemiaHelper/wallDashSpringRight.attributes.description.spritePath=The path to the textures for the spring.
+entities.BrokemiaHelper/wallDashSpringLeft.attributes.description.spritePath=The path to the textures for the spring.
 
 # Big Spring
 entities.BrokemiaHelper/bigSpring.placements.name.up=Big Spring (Up)
@@ -259,6 +263,11 @@ entities.BrokemiaHelper/tallGrass.attributes.description.wiggleFrequency=The num
 entities.BrokemiaHelper/tallGrass.attributes.description.minPlayerSpeed=How fast the player must be going for the grass to wiggle.
 entities.BrokemiaHelper/tallGrass.attributes.description.scaleMultiplier=How much the scale changes as the grass wiggles.
 entities.BrokemiaHelper/tallGrass.attributes.description.rotationMultiplier=How much the rotation changes as the grass wiggles (in radians).
+
+# Theo Respawn
+entities.BrokemiaHelper/theoRespawn.placements.name.respawn=Theo Respawn
+entities.BrokemiaHelper/theoRespawn.placements.description.respawn=When the player enters this room, a Theo Crystal will spawn at the Theo Respawn closest to the player.
+entities.BrokemiaHelper/theoRespawn.attributes.description.flag=The flag that must be active for this Theo Respawn to activate.
 
 # Persistent Mini Textbox Trigger
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.name.trigger=Persistent MiniTextbox

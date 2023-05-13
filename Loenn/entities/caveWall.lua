@@ -11,6 +11,7 @@ caveWall.placements = {
     data = {
         tiletype = "3",
         disableTransitionFading = false,
+        blockDisplacement = true,
         width = 8,
         height = 8
     }

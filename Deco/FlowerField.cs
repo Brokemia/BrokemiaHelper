@@ -47,7 +47,7 @@ namespace BrokemiaHelper.Deco {
             }
             
             rand = new Random(string.IsNullOrWhiteSpace(randomSeed) ? Calc.Random.Next() :
-                BitConverter.ToInt32(BrokemiaHelperModule.Hasher.ComputeHash(Encoding.UTF8.GetBytes(randomSeed)), 0));
+                randomSeed.SimpleHash());
             
             for (int i = 0; i < width; i++) {
                 if(rand.NextFloat() < flowerDensity) {

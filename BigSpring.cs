@@ -27,14 +27,21 @@ namespace BrokemiaHelper {
         // left, center, right
         private int[] sliceWidths;
 
+        private bool ignoreRedBoosters;
+
         public BigSpring(EntityData data, Vector2 offset)
             : base(data.Position + offset, data.Int("orientation", 0) == 3 ? Orientations.Floor : (Orientations)data.Int("orientation", 0), data.Bool("playerCanUse", true)) {
             Orientation = (Orientations)data.Int("orientation", 0);
             dashSpring = data.Bool("dashSpring", false);
+            ignoreRedBoosters = data.Bool("ignoreRedBoosters", false);
             width = data.Width;
             horizontalTexturePadding = data.Int("horizontalTexturePadding", 4);
             slicedSprite = data.Bool("slicedSprite", false);
             DynData<Spring> selfData = new(this);
+
+            if (data.Bool("ignoreHoldables", false)) {
+                Remove(Get<HoldableCollider>());
+            }
 
             // Only one other player collider is added so it can easily be removed
             Remove(Get<PlayerCollider>());
@@ -82,6 +89,9 @@ namespace BrokemiaHelper {
 
         protected void OnCollide(Player player) {
             if (dashSpring && (player.StateMachine.State == 9 || !(bool)playerCanUseInfo.GetValue(this) || !player.DashAttacking)) {
+                return;
+            }
+            if (ignoreRedBoosters && player.StateMachine.State == Player.StRedDash) {
                 return;
             }
             if (Orientation == Orientations.Floor) {

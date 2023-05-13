@@ -82,7 +82,7 @@ namespace BrokemiaHelper {
         private static readonly Dictionary<string, int> nodeTextsReverse = new();
         private static readonly Random rand = new(2354362);
 
-        private static string ProcessDialog(string dialogID) {
+        public static string ProcessDialog(string dialogID) {
             string text = Dialog.Get(dialogID.Trim());
             MatchCollection matchCollection = null;
             bool anyChanges = false;
@@ -182,10 +182,11 @@ namespace BrokemiaHelper {
         public static void Load() {
             On.Celeste.MiniTextbox.Routine += MiniTextbox_Routine;
             On.Celeste.MiniTextbox.ctor += MiniTextbox_ctor;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array += Textbox_ctor;
             On.Celeste.FancyText.Parse += FancyText_Parse;
             On.Celeste.FancyText.Text.Draw += Text_Draw;
         }
-
+        
         private static void Text_Draw(On.Celeste.FancyText.Text.orig_Draw orig, FancyText.Text self, Vector2 position, Vector2 justify, Vector2 scale, float alpha, int start, int end) {
             var selfData = DynamicData.For(self);
             if (selfData.TryGet("brokemiaHelperSpecialNodes", out List<SpecialTextNode> nodes)) {
@@ -221,9 +222,14 @@ namespace BrokemiaHelper {
             orig(self, ProcessDialog(dialogId));
         }
 
+        private static void Textbox_ctor(On.Celeste.Textbox.orig_ctor_string_Language_Func1Array orig, Textbox self, string dialog, Language language, Func<IEnumerator>[] events) {
+            orig(self, ProcessDialog(dialog), language, events);
+        }
+
         public static void Unload() {
             On.Celeste.MiniTextbox.Routine -= MiniTextbox_Routine;
             On.Celeste.MiniTextbox.ctor -= MiniTextbox_ctor;
+            On.Celeste.Textbox.ctor_string_Language_Func1Array -= Textbox_ctor;
             On.Celeste.FancyText.Parse -= FancyText_Parse;
             On.Celeste.FancyText.Text.Draw -= Text_Draw;
         }
@@ -239,10 +245,13 @@ namespace BrokemiaHelper {
                             yield break;
                         } else {
                             yield return selfPersistent.time;
+                            selfPersistent.OnFinish?.Invoke();
+                            selfPersistent.OnFinish = null;
                         }
+                    } else {
+                        yield return res.Current;
                     }
-                    yield return res.Current;
-                }
+                }                
             } else {
                 yield return new SwapImmediately(orig(self));
             }

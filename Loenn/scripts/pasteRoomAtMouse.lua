@@ -11,7 +11,7 @@ local script = {
     tooltip = "Paste a room from your clipboard into the map at the position you click"
 }
 
-function script.run(room, args, ctx)
+function script.prerun(room, args, ctx)
     local map = loadedState.map
     if map then
         local success, newRoom = utils.unserialize(love.system.getClipboardText())
@@ -24,8 +24,8 @@ function script.run(room, args, ctx)
                 duplicateCount += 1
             end
             newRoom.name = name
-            newRoom.x = ctx.mouseMapX
-            newRoom.y = ctx.mouseMapY
+            newRoom.x = math.round(ctx.mouseMapX / 8) * 8
+            newRoom.y = math.round(ctx.mouseMapY / 8) * 8
             map_item_utils.addRoom(map, newRoom)
         end
     end

@@ -10,7 +10,7 @@ local script = {
     tooltip = "Paste a room from your clipboard into the map"
 }
 
-function script.run(room, args)
+function script.prerun(room, args)
     local map = loadedState.map
     if map then
         local success, newRoom = utils.unserialize(love.system.getClipboardText())

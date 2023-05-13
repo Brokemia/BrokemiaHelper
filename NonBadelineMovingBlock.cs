@@ -2,13 +2,17 @@
 using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
+using MonoMod.Utils;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace BrokemiaHelper {
     [CustomEntity("BrokemiaHelper/nonBadelineMovingBlock")]
     [Tracked(false)]
     public class NonBadelineMovingBlock : Solid {
+
+        private static DynamicData easeData = new(typeof(Ease));
         
         private float startDelay;
 
@@ -30,11 +34,15 @@ namespace BrokemiaHelper {
 
         private bool firstUpdate = true;
 
-        public NonBadelineMovingBlock(Vector2[] nodes, float width, float height, char tiletype, char highlightTiletype, string flag, float delay, float travelTime)
+        private Ease.Easer easer;
+
+        public NonBadelineMovingBlock(Vector2[] nodes, float width, float height, char tiletype, char highlightTiletype, string flag, float delay, float travelTime, int surfaceSoundIndex, string easeType)
             : base(nodes[0], width, height, safe: false) {
+            SurfaceSoundIndex = surfaceSoundIndex;
             this.nodes = nodes;
             startFlag = flag;
             this.travelTime = travelTime;
+            easer = easeData.Get<Ease.Easer>(easeType);
             startDelay = delay;
             startDelay -= Engine.DeltaTime;
             int newSeed = Calc.Random.Next();
@@ -52,7 +60,7 @@ namespace BrokemiaHelper {
         }
 
         public NonBadelineMovingBlock(EntityData data, Vector2 offset)
-            : this(data.NodesWithPosition(offset), data.Width, data.Height, data.Char("tiletype", 'g'), data.Char("highlightTiletype", 'G'), data.Attr("startFlag", null), data.Float("startDelay", 0), data.Float("travelTime", 0.8f)) {
+            : this(data.NodesWithPosition(offset), data.Width, data.Height, data.Char("tiletype", 'g'), data.Char("highlightTiletype", 'G'), data.Attr("startFlag", null), data.Float("startDelay", 0), data.Float("travelTime", 0.8f), data.Int("surfaceSoundIndex", 8), data.Attr("easing", "CubeIn")) {
         }
 
         public override void Update() {
@@ -95,7 +103,7 @@ namespace BrokemiaHelper {
                 nodeIndex %= nodes.Length;
                 Vector2 from = Position;
                 Vector2 to = nodes[nodeIndex];
-                Tween tween = Tween.Create(Tween.TweenMode.Oneshot, Ease.CubeIn, travelTime, start: true);
+                Tween tween = Tween.Create(Tween.TweenMode.Oneshot, easer, travelTime, start: true);
                 tween.OnUpdate = delegate (Tween t) {
                     MoveTo(Vector2.Lerp(from, to, t.Eased));
                 };

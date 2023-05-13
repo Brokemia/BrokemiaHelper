@@ -6,6 +6,7 @@ using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace BrokemiaHelper {
     [CustomEntity("BrokemiaHelper/dashSpring", "BrokemiaHelper/wallDashSpringRight", "BrokemiaHelper/wallDashSpringLeft", "BrokemiaHelper/dashSpringDown")]
@@ -16,16 +17,23 @@ namespace BrokemiaHelper {
 
         private static MethodInfo BounceAnimateInfo = typeof(Spring).GetMethod("BounceAnimate", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod);
 
-        public DashSpring(Vector2 position, Orientations orientation, bool playerCanUse)
+        private bool ignoreRedBoosters;
+
+        public DashSpring(Vector2 position, Orientations orientation, string spritePath, bool playerCanUse, bool ignoreHoldables, bool ignoreRedBubble)
             : base(position, orientation == (Orientations)3 ? Orientations.Floor : orientation, playerCanUse) {
             Orientation = orientation;
+            ignoreRedBoosters = ignoreRedBubble;
             DynData<Spring> selfData = new DynData<Spring>(this);
+
+            if(ignoreHoldables) {
+                Remove(Get<HoldableCollider>());
+            }
 
             // Only one other player collider is added so it can easily be removed
             Remove(Get<PlayerCollider>());
             Add(new PlayerCollider(OnCollide));
             Sprite sprite = (Sprite)spriteInfo.GetValue(this);
-            sprite.Reset(GFX.Game, "objects/BrokemiaHelper/dashSpring/");
+            sprite.Reset(GFX.Game, spritePath);
             sprite.Add("idle", "", 0f, default(int));
             sprite.Add("bounce", "", 0.07f, "idle", 0, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5);
             sprite.Add("disabled", "white", 0.07f);
@@ -43,7 +51,7 @@ namespace BrokemiaHelper {
         }
 
         public DashSpring(EntityData data, Vector2 offset)
-            : this(data.Position + offset, GetOrientationFromName(data.Name), data.Bool("playerCanUse", true)) {
+            : this(data.Position + offset, GetOrientationFromName(data.Name), data.Attr("spritePath", "objects/BrokemiaHelper/dashSpring/"), data.Bool("playerCanUse", true), data.Bool("ignoreHoldables", false), data.Bool("ignoreRedBoosters", false)) {
         }
 
         public static Orientations GetOrientationFromName(string name) {
@@ -63,6 +71,9 @@ namespace BrokemiaHelper {
 
         protected void OnCollide(Player player) {
             if (player.StateMachine.State == 9 || !(bool)playerCanUseInfo.GetValue(this) || !player.DashAttacking) {
+                return;
+            }
+            if(ignoreRedBoosters && player.StateMachine.State == Player.StRedDash) {
                 return;
             }
             if (Orientation == Orientations.Floor) {

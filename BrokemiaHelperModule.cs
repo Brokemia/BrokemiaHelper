@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿//#define CARCINIZATION
+
+using Microsoft.Xna.Framework;
 using Monocle;
 using Celeste;
 using System;
@@ -11,6 +13,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using Celeste.Mod.CelesteNet.Client;
 using System.Runtime.CompilerServices;
+using BrokemiaHelper.Deco;
 
 // WhiteBooster, CassetteZipMover, and CelesteInCeleste commented out for a mostly-functioning release
 [assembly: IgnoresAccessChecksTo("Celeste")]
@@ -27,10 +30,6 @@ namespace BrokemiaHelper
         private static float whiteBoosterUpSpeedMultiplier = .75f;
 
         public static float shadownKevinTime = 0.2f;
-
-        private bool cassetteBlocksAdded;
-
-        private static PropertyInfo ShouldCreateCassetteManager = typeof(Level).GetProperty("ShouldCreateCassetteManager", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetProperty);
 
         private bool isInShadowKevin = false;
 
@@ -58,10 +57,9 @@ namespace BrokemiaHelper
         }
 
         // If you don't need to store any settings, => null
-        public override Type SettingsType => null;
+        public override Type SessionType => typeof(BrokemiaHelperSession);
 
-        // If you don't need to store any save data, => null
-        public override Type SaveDataType => null;
+        public static BrokemiaHelperSession Session => (BrokemiaHelperSession)Instance._Session;
 
         // Set up any hooks, event handlers and your mod in general here.
         // Load runs before Celeste itself has initialized properly.
@@ -75,7 +73,6 @@ namespace BrokemiaHelper
                 Tracker.TrackedEntityTypes[typeof(CassetteDreamBlock)].Add(typeof(DreamBlock));
             };
             Everest.Events.Level.OnLoadEntity += Level_OnLoadEntity;
-            Everest.Events.Level.OnLoadLevel += Level_OnLoadLevel;
             On.Celeste.Player.RedDashUpdate += (orig, self) =>
             {
                 if (self.CurrentBooster is FakeBooster)
@@ -92,6 +89,7 @@ namespace BrokemiaHelper
             On.Celeste.CassetteBlockManager.SilentUpdateBlocks += CassetteBlockManager_SilentUpdateBlocks;
             On.Celeste.CassetteBlockManager.SetActiveIndex += CassetteBlockManager_SetActiveIndex;
             On.Celeste.CassetteBlockManager.SetWillActivate += CassetteBlockManager_SetWillActivate;
+            On.Celeste.Level.LoadLevel += Level_LoadLevel;
 
             On.Celeste.Actor.MoveVExact += Actor_MoveVExact;
             On.Celeste.Actor.MoveHExact += Actor_MoveHExact;
@@ -105,6 +103,13 @@ namespace BrokemiaHelper
             CaveWall.Load();
             PersistentMiniTextbox.Load();
             TronState.Load();
+            NeutralDeathPenaltyTrigger.Load();
+            ImagineAWorldWhereTextboxesDoNotHavePortraitsThisIsTheTwilightZone.Load();
+            PlayerMotionComponent.Load();
+            UniversalAccelerator.Load();
+#if CARCINIZATION
+            Carcinization.Load();
+#endif
 
             DecalRegistry.AddPropertyHandler("BrokemiaHelper_cassetteAnimated", (decal, attrs) => {
                 int[] beatFrames = new[] { 0, 0, 0, 0 };
@@ -176,33 +181,41 @@ namespace BrokemiaHelper
         }
 
         void CassetteBlockManager_SetActiveIndex(On.Celeste.CassetteBlockManager.orig_SetActiveIndex orig, CassetteBlockManager self, int index) {
-            foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                entity.Activated = (entity.Index == index);
+            if (self.Scene != null) {
+                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
+                    entity.Activated = (entity.Index == index);
+                }
             }
             orig(self, index);
         }
 
         void CassetteBlockManager_StopBlocks(On.Celeste.CassetteBlockManager.orig_StopBlocks orig, CassetteBlockManager self) {
-            foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                entity.Finish();
+            if (self.Scene != null) {
+                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
+                    entity.Finish();
+                }
             }
             orig(self);
         }
 
         void CassetteBlockManager_SilentUpdateBlocks(On.Celeste.CassetteBlockManager.orig_SilentUpdateBlocks orig, CassetteBlockManager self) {
             DynData<CassetteBlockManager> selfData = new DynData<CassetteBlockManager>(self);
-            foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                if (entity.ID.Level == self.SceneAs<Level>().Session.Level) {
-                    entity.SetActivatedSilently(entity.Index == selfData.Get<int>("currentIndex"));
+            if (self.Scene != null) {
+                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
+                    if (entity.ID.Level == self.SceneAs<Level>().Session.Level) {
+                        entity.SetActivatedSilently(entity.Index == self.currentIndex);
+                    }
                 }
             }
             orig(self);
         }
 
         void CassetteBlockManager_SetWillActivate(On.Celeste.CassetteBlockManager.orig_SetWillActivate orig, CassetteBlockManager self, int index) {
-            foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                if (entity.Index == index || entity.Activated) {
-                    entity.WillToggle();
+            if (self.Scene != null) {
+                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
+                    if (entity.Index == index || entity.Activated) {
+                        entity.WillToggle();
+                    }
                 }
             }
             orig(self, index);
@@ -272,7 +285,7 @@ namespace BrokemiaHelper
         }
 
         // TODO Add back in but don't desync TAS
-        private IEnumerator Player_RedDashCoroutine(On.Celeste.Player.orig_RedDashCoroutine orig, Celeste.Player self)
+        private IEnumerator Player_RedDashCoroutine(On.Celeste.Player.orig_RedDashCoroutine orig, Player self)
         {
             if (self.CurrentBooster is FakeBooster)
             {
@@ -286,7 +299,7 @@ namespace BrokemiaHelper
                 Vector2 movement = (Vector2)CorrectDashPrecision.Invoke(self, new object[] { lastAim.GetValue(self) }) * whiteBoosterSpeed;
                 self.Speed = movement;
                 gliderBoostDir.SetValue(self, self.DashDir = (Vector2)lastAim.GetValue(self));
-                self.SceneAs<Celeste.Level>().DirectionalShake(self.DashDir, 0.2f);
+                self.SceneAs<Level>().DirectionalShake(self.DashDir, 0.2f);
                 if (self.DashDir.X != 0f)
                 {
                     self.Facing = (Facings)Math.Sign(self.DashDir.X);
@@ -299,17 +312,13 @@ namespace BrokemiaHelper
             }
         }
 
-        void Level_OnLoadLevel(Level level, Player.IntroTypes playerIntro, bool isFromLoader)
-        {
-            if (cassetteBlocksAdded && level.Tracker.GetEntity<CassetteBlockManager>() == null && (bool)ShouldCreateCassetteManager.GetValue(level))
-            {
-                level.Add(new CassetteBlockManager());
-                level.Tracker.GetEntity<CassetteBlockManager>()?.OnLevelStart();
-            }
-            cassetteBlocksAdded = false;
+        private bool createdCassetteManager;
+        private void Level_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader) {
+            createdCassetteManager = false;
+            orig(self, playerIntro, isFromLoader);
         }
 
-        bool Level_OnLoadEntity(Celeste.Level level, Celeste.LevelData levelData, Vector2 offset, Celeste.EntityData entityData)
+        bool Level_OnLoadEntity(Level level, LevelData levelData, Vector2 offset, EntityData entityData)
         {
             if (entityData.Name.StartsWith("brokemiahelper/", StringComparison.InvariantCulture))
             {
@@ -345,7 +354,15 @@ namespace BrokemiaHelper
                         level.CassetteBlockTempo = cassetteEntity.Tempo;
                     }
                     level.CassetteBlockBeats = Math.Max(cassetteEntity.Index + 1, level.CassetteBlockBeats);
-                    cassetteBlocksAdded = true;
+                    
+                    if (!createdCassetteManager) {
+                        createdCassetteManager = true;
+                        if (level.Tracker.GetEntity<CassetteBlockManager>() == null && level.ShouldCreateCassetteManager) {
+                            if (!level.Entities.ToAdd.Any(e => e is CassetteBlockManager)) {
+                                level.Entities.ForceAdd(new CassetteBlockManager());
+                            }
+                        }
+                    }
                     return true;
                 }
             }
@@ -374,6 +391,12 @@ namespace BrokemiaHelper
             CaveWall.Unload();
             PersistentMiniTextbox.Unload();
             TronState.Unload();
+            NeutralDeathPenaltyTrigger.Unload();
+            ImagineAWorldWhereTextboxesDoNotHavePortraitsThisIsTheTwilightZone.Unload();
+            UniversalAccelerator.Unload();
+#if CARCINIZATION
+            Carcinization.Unload();
+#endif
             //On.Celeste.Player.RedDashCoroutine -= Player_RedDashCoroutine;
         }
 

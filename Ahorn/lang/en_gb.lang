@@ -23,3 +23,6 @@ placements.entities.BrokemiaHelper/nonBadelineMovingBlock.tooltips.highlightTile
 
 # Troll Strawberry
 placements.entities.BrokemiaHelper/trollStrawberry.tooltips.winged=The strawberry attempts to vertically rise offscreen when the player dashes.
+
+# Theo Respawn
+placements.entities.BrokemiaHelper/theoRespawn.tooltips.flag=The flag that must be active for this Theo Respawn to activate.

@@ -10,6 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics.Contracts;
+using System.Security.Policy;
 
 namespace BrokemiaHelper {
     public static class Extensions {
@@ -95,6 +97,43 @@ namespace BrokemiaHelper {
             Draw.SpriteBatch.Draw(self.Texture.Texture_Safe, position,
                 new Rectangle(self.ClipRect.X + clip.X, self.ClipRect.Y + clip.Y, clip.Width, clip.Height),
                 Color.White, rotation, (new Vector2(self.Width * justify.X, self.Height * justify.Y) - self.DrawOffset) / scaleFix, scaleFix * scale, SpriteEffects.None, 0f);
+        }
+
+        public static int SimpleHash(this string str) {
+            unchecked {
+                int hash = 17;
+                hash = hash * 31 + str.Length;
+                foreach (char c in str) hash = hash * 31 + c;
+                return hash;
+            }
+        }
+
+        public static unsafe int WindowsHashCode(this string self) {
+            unsafe {
+                fixed (char* src = self) {
+                    Contract.Assert(src[self.Length] == '\0', "src[this.Length] == '\\0'");
+                    Contract.Assert(((int)src) % 4 == 0, "Managed string should start at 4 bytes boundary");
+
+                    int hash1 = (5381 << 16) + 5381;
+                    int hash2 = hash1;
+
+                    // 32 bit machines.
+                    int* pint = (int*)src;
+                    int len = self.Length;
+                    while (len > 2) {
+                        hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ pint[0];
+                        hash2 = ((hash2 << 5) + hash2 + (hash2 >> 27)) ^ pint[1];
+                        pint += 2;
+                        len -= 4;
+                    }
+
+                    if (len > 0) {
+                        hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ pint[0];
+                    }
+
+                    return hash1 + (hash2 * 1566083941);
+                }
+            }
         }
     }
 }
