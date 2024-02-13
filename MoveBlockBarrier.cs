@@ -16,6 +16,7 @@ namespace BrokemiaHelper {
 
         public bool blockDebris = false;
 
+        // TODO mod interop to add to this
         public static List<string> ExtraMoveBlockTypes = new(new string[]{
             // Communal Helper
             "Celeste.Mod.CommunalHelper.Entities.MoveSwapBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",

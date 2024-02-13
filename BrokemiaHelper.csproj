@@ -52,6 +52,11 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\System.ValueTuple.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="FNA">
       <HintPath>..\..\FNA.dll</HintPath>
@@ -90,6 +95,8 @@
     <Compile Include="Deco\NoodleEmitter.cs" />
     <Compile Include="Deco\PlayerMotionComponent.cs" />
     <Compile Include="Deco\TallGrass.cs" />
+    <Compile Include="Deco\ThornGrowers.cs" />
+    <Compile Include="DependencyFlagController.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="FloatierSpaceBlock.cs" />
     <Compile Include="ImagineAWorldWhereTextboxesDoNotHavePortraitsThisIsTheTwilightZone.cs" />

@@ -3,3 +3,6 @@ Ahorn\entities\cassetteZipMover.jl
 Ahorn\entities\shadowCrushBlock.jl
 Ahorn\triggers\cursedteleporttrigger.jl
 Loenn\entities\Not ported\
+Loenn\entities\rwLizard.lua
+Loenn\entities\noodleEmitter.lua
+bin\Debug\BrokemiaHelper-nstrip.dll

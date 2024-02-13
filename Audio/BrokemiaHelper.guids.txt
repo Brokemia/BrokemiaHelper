@@ -1,0 +1,4 @@
+{2e97f2e0-2316-48c9-8515-a3c3b9b9f657} event:/brokemia/helper/chimes/1
+{b5f06570-0a5b-47a2-9403-fde4ba8ce767} event:/brokemia/helper/chimes/2
+{352f6f50-7915-46e6-a2a8-cd38a72a4093} event:/brokemia/helper/chimes/3
+{eaede938-7da8-4507-98ae-56ffedcca70e} bank:/BrokemiaHelper

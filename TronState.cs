@@ -1,7 +1,6 @@
 ﻿using Celeste;
 using Microsoft.Xna.Framework;
 using Monocle;
-using MonoMod.Utils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,97 +8,49 @@ using System.Linq;
 
 namespace BrokemiaHelper {
     // Largely copied from vanilla feathers
-    public class TronState {
-        public static int TronStateID;
+    public class TronState : Component {
         private const float defaultSlowSpeed = Player.StarFlySlowSpeed;
         private const float defaultTargetSpeed = Player.StarFlyTargetSpeed;
         private const float defaultMaxSpeed = Player.StarFlyMaxSpeed;
-
-        private static Color? lastColor;
-        public static List<Vector2> trail;
-        internal static float trailFade;
         public static readonly float pointSpacingSq = 90 * 90;
 
-        public static event Action<Vector2> OnAddTrailPt;
+        public event Action<Vector2> OnAddTrailPt;
 
-        public static void Load() {
-            On.Celeste.Player.ctor += Player_ctor;
-            On.Celeste.Player.Render += Player_Render;
-            On.Celeste.PlayerDeadBody.Render += PlayerDeadBody_Render;
-            On.Celeste.PlayerDeadBody.Update += PlayerDeadBody_Update;
-            On.Celeste.Player.UpdateHair += Player_UpdateHair;
-            On.Celeste.Player.UpdateSprite += Player_UpdateSprite;
-            On.Celeste.Player.OnCollideH += Player_OnCollideH;
-            On.Celeste.Player.OnCollideV += Player_OnCollideV;
+        public int TronStateID { get; private set; }
+        public List<Vector2> trail = new();
+        public Color? HairColor { get; set; }
+        public float SlowSpeed { get; set; } = defaultSlowSpeed;
+        public float TargetSpeed { get; set; } = defaultTargetSpeed;
+        public float MaxSpeed { get; set; } = defaultMaxSpeed;
+        public bool LeaveTrail { get; set; } = true;
+
+
+        private Color? lastColor;
+        private float trailFade = 1;
+
+        public TronState() : base(true, true) {
         }
 
-        private static void PlayerDeadBody_Update(On.Celeste.PlayerDeadBody.orig_Update orig, PlayerDeadBody self) {
-            orig(self);
-            trailFade = Calc.Approach(trailFade, 0, 2 * Engine.DeltaTime);
-        }
-
-        private static void PlayerDeadBody_Render(On.Celeste.PlayerDeadBody.orig_Render orig, PlayerDeadBody self) {
-            orig(self);
-            TrailRender(null);
-        }
-
-        private static void Player_OnCollideV(On.Celeste.Player.orig_OnCollideV orig, Player self, CollisionData data) {
-            if (self.StateMachine.State == TronStateID) {
-                self.StateMachine.state = Player.StStarFly;
-                orig(self, data);
-                self.StateMachine.state = TronStateID;
-            } else {
-                orig(self, data);
+        public override void Added(Entity entity) {
+            base.Added(entity);
+            if (entity is Player player) {
+                TronStateID = player.StateMachine.AddState(TronUpdate, TronCoroutine, TronBegin, TronEnd);
             }
         }
 
-        private static void Player_OnCollideH(On.Celeste.Player.orig_OnCollideH orig, Player self, CollisionData data) {
-            if (self.StateMachine.State == TronStateID) {
-                self.StateMachine.state = Player.StStarFly;
-                orig(self, data);
-                self.StateMachine.state = TronStateID;
-            } else {
-                orig(self, data);
+        public override void Update() {
+            base.Update();
+            if (Entity is PlayerDeadBody || (Entity is Player player && player.StateMachine.State != TronStateID)) {
+                trailFade = Calc.Approach(trailFade, 0, 2 * Engine.DeltaTime);
             }
         }
 
-        private static void Player_UpdateSprite(On.Celeste.Player.orig_UpdateSprite orig, Player self) {
-            if (self.StateMachine.State == TronStateID) {
-                self.StateMachine.state = Player.StStarFly;
-                orig(self);
-                self.StateMachine.state = TronStateID;
-            } else {
-                orig(self);
-            }
-        }
-
-        private static void Player_UpdateHair(On.Celeste.Player.orig_UpdateHair orig, Player self, bool applyGravity) {
-            if (self.StateMachine.State == TronStateID) {
-                self.StateMachine.state = Player.StStarFly;
-                orig(self, applyGravity);
-                self.StateMachine.state = TronStateID;
-            } else {
-                orig(self, applyGravity);
-            }
-        }
-
-        private static void Player_Render(On.Celeste.Player.orig_Render orig, Player self) {
-            if (self.StateMachine.State == TronStateID) {
-                self.StateMachine.state = Player.StStarFly;
-                orig(self);
-                self.StateMachine.state = TronStateID;
-            } else {
-                orig(self);
-            }
-            TrailRender(self);
-        }
-
-        private static void TrailRender(Player self) {
+        public override void Render() {
             if (trail != null) {
-                if (self != null) {
-                    lastColor = DynamicData.For(self).TryGet("BrokemiaHelperTronHairColor", out Color? color) ? color : self.starFlyColor;
+                if (Entity is Player player) {
+                    lastColor = HairColor ?? player.starFlyColor;
                 }
-                if(lastColor == null) {
+                if (lastColor == null) {
                     return;
                 }
                 lastColor *= trailFade;
@@ -109,26 +60,23 @@ namespace BrokemiaHelper {
             }
         }
 
-        private static void Player_ctor(On.Celeste.Player.orig_ctor orig, Player self, Vector2 position, PlayerSpriteMode spriteMode) {
-            orig(self, position, spriteMode);
-            TronStateID = self.StateMachine.AddState(() => TronUpdate(self), () => TronCoroutine(self), () => TronBegin(self), () => TronEnd(self));
-            trailFade = 1;
-            trail = new();
-        }
-        
-        private static void AddTrail(Player self, Vector2 pt) {
-            trail.Add(pt);
-            OnAddTrailPt?.Invoke(pt);
+        private void AddTrail(Vector2 pt) {
+            if (LeaveTrail) {
+                trail.Add(pt);
+                OnAddTrailPt?.Invoke(pt);
+            }
         }
 
-        public static bool StartTron(Player self) {
+        public bool StartTron() {
+            if (Entity is not Player self) return false;
             self.RefillStamina();
             if (self.StateMachine.State == Player.StReflectionFall) {
                 return false;
             }
+
             if (self.StateMachine.State == TronStateID) {
                 self.starFlyTimer = float.MaxValue;
-                self.Sprite.Color = DynamicData.For(self).TryGet("BrokemiaHelperTronHairColor", out Color? color) ? color.Value : self.starFlyColor;
+                self.Sprite.Color = HairColor ?? self.starFlyColor;
                 Input.Rumble(RumbleStrength.Medium, RumbleLength.Medium);
             } else {
                 self.StateMachine.State = TronStateID;
@@ -136,7 +84,8 @@ namespace BrokemiaHelper {
             return true;
         }
 
-        private static void TronBegin(Player self) {
+        private void TronBegin() {
+            var self = Entity as Player;
             self.Sprite.Play("startStarFly");
             self.starFlyTransforming = true;
             self.starFlyTimer = float.MaxValue;
@@ -159,7 +108,8 @@ namespace BrokemiaHelper {
             self.starFlyWarningSfx.Stop();
         }
 
-        private static void TronEnd(Player self) {
+        private void TronEnd() {
+            var self = Entity as Player;
             self.Play("event:/game/06_reflection/feather_state_end");
             self.starFlyWarningSfx.Stop();
             self.starFlyLoopSfx.Stop();
@@ -174,7 +124,7 @@ namespace BrokemiaHelper {
             }
         }
 
-        private static void TronReturnToNormalHitbox(Player self) {
+        private void TronReturnToNormalHitbox(Player self) {
             self.Collider = self.normalHitbox;
             self.hurtbox = self.normalHurtbox;
             if (!self.CollideCheck<Solid>()) {
@@ -193,7 +143,8 @@ namespace BrokemiaHelper {
             }
         }
 
-        private static IEnumerator TronCoroutine(Player self) {
+        private IEnumerator TronCoroutine() {
+            var self = Entity as Player;
             while (self.Sprite.CurrentAnimationID == "startStarFly") {
                 yield return null;
             }
@@ -203,8 +154,8 @@ namespace BrokemiaHelper {
             yield return 0.1f;
             trailFade = 1;
             trail.Clear();
-            AddTrail(self, self.Center);
-            self.Sprite.Color = DynamicData.For(self).TryGet("BrokemiaHelperTronHairColor", out Color? color) ? color.Value : self.starFlyColor;
+            AddTrail(self.Center);
+            self.Sprite.Color = HairColor ?? self.starFlyColor;
             self.Sprite.HairCount = 7;
             self.Hair.DrawPlayerSpriteOutline = true;
             self.level.Displacement.AddBurst(self.Center, 0.25f, 8f, 32f);
@@ -227,12 +178,8 @@ namespace BrokemiaHelper {
             self.starFlyWarningSfx.Play("event:/game/06_reflection/feather_state_warning");
         }
 
-        private static int TronUpdate(Player self) {
-            // Allow other mods to configure the speed;
-            var selfData = DynamicData.For(self);
-            float? slowSpeed = selfData.TryGet("BrokemiaHelperTronSlowSpeed", out slowSpeed) ? slowSpeed : defaultSlowSpeed;
-            float? targetSpeed = selfData.TryGet("BrokemiaHelperTronTargetSpeed", out targetSpeed) ? targetSpeed : defaultTargetSpeed;
-            float? maxSpeed = selfData.TryGet("BrokemiaHelperTronMaxSpeed", out maxSpeed) ? maxSpeed : defaultMaxSpeed;
+        private int TronUpdate() {
+            var self = Entity as Player;
 
             self.Sprite.HairCount = 7;
             self.starFlyBloom.Alpha = Calc.Approach(self.starFlyBloom.Alpha, 0.7f, Engine.DeltaTime * 2f);
@@ -251,13 +198,13 @@ namespace BrokemiaHelper {
                 float target;
                 if (flag) {
                     self.starFlySpeedLerp = 0f;
-                    target = slowSpeed.Value;
+                    target = SlowSpeed;
                 } else if (vector != Vector2.Zero && Vector2.Dot(vector, featherSteer) >= 0.45f) {
                     self.starFlySpeedLerp = Calc.Approach(self.starFlySpeedLerp, 1f, Engine.DeltaTime / 1f);
-                    target = MathHelper.Lerp(targetSpeed.Value, maxSpeed.Value, self.starFlySpeedLerp);
+                    target = MathHelper.Lerp(TargetSpeed, MaxSpeed, self.starFlySpeedLerp);
                 } else {
                     self.starFlySpeedLerp = 0f;
-                    target = targetSpeed.Value;
+                    target = TargetSpeed;
                 }
                 self.starFlyLoopSfx.Param("feather_speed", (!flag) ? 1 : 0);
                 float val = self.Speed.Length();
@@ -267,8 +214,8 @@ namespace BrokemiaHelper {
                     self.level.Particles.Emit(FlyFeather.P_Flying, 1, self.Center, Vector2.One * 2f, (-self.Speed).Angle());
                 }
                 float minDist = float.MaxValue;
-                for(int i = 0; i < trail.Count - 1; i++) {
-                    if((trail[i] - self.Center).LengthSquared() < minDist) {
+                for (int i = 0; i < trail.Count - 1; i++) {
+                    if ((trail[i] - self.Center).LengthSquared() < minDist) {
                         minDist = (trail[i] - self.Center).LengthSquared();
                     }
                     if ((trail[i] - self.Center).LengthSquared() < pointSpacingSq * Engine.DeltaTime * Engine.DeltaTime) {
@@ -276,16 +223,100 @@ namespace BrokemiaHelper {
                         break;
                     }
                 }
-                if ((self.Center - trail.Last()).LengthSquared() >= pointSpacingSq * Engine.DeltaTime * Engine.DeltaTime) {
-                    AddTrail(self, self.Center);
+                if (trail.Count > 0 && (self.Center - trail.Last()).LengthSquared() >= pointSpacingSq * Engine.DeltaTime * Engine.DeltaTime) {
+                    AddTrail(self.Center);
                 }
             }
             return TronStateID;
         }
 
+        public static void Load() {
+            On.Celeste.Player.ctor += Player_ctor;
+            On.Celeste.Player.Render += Player_Render;
+            On.Celeste.PlayerDeadBody.Awake += PlayerDeadBody_Awake;
+            On.Celeste.Player.UpdateHair += Player_UpdateHair;
+            On.Celeste.Player.UpdateSprite += Player_UpdateSprite;
+            On.Celeste.Player.OnCollideH += Player_OnCollideH;
+            On.Celeste.Player.OnCollideV += Player_OnCollideV;
+        }
+
+        private static void PlayerDeadBody_Awake(On.Celeste.PlayerDeadBody.orig_Awake orig, PlayerDeadBody self, Scene scene) {
+            orig(self, scene);
+            // Move the component to the corpse
+            var state = self.player?.Get<TronState>();
+            if (state != null) {
+                self.Add(state);
+            }
+        }
+
+        private static void Player_OnCollideV(On.Celeste.Player.orig_OnCollideV orig, Player self, CollisionData data) {
+            var id = self.Get<TronState>()?.TronStateID;
+            if (self.StateMachine.State == id) {
+                self.StateMachine.state = Player.StStarFly;
+                orig(self, data);
+                self.StateMachine.state = id.Value;
+            } else {
+                orig(self, data);
+            }
+        }
+
+        private static void Player_OnCollideH(On.Celeste.Player.orig_OnCollideH orig, Player self, CollisionData data) {
+            var id = self.Get<TronState>()?.TronStateID;
+            if (self.StateMachine.State == id) {
+                self.StateMachine.state = Player.StStarFly;
+                orig(self, data);
+                self.StateMachine.state = id.Value;
+            } else {
+                orig(self, data);
+            }
+        }
+
+        private static void Player_UpdateSprite(On.Celeste.Player.orig_UpdateSprite orig, Player self) {
+            var id = self.Get<TronState>()?.TronStateID;
+            if (self.StateMachine.State == id) {
+                self.StateMachine.state = Player.StStarFly;
+                orig(self);
+                self.StateMachine.state = id.Value;
+            } else {
+                orig(self);
+            }
+        }
+
+        private static void Player_UpdateHair(On.Celeste.Player.orig_UpdateHair orig, Player self, bool applyGravity) {
+            var id = self.Get<TronState>()?.TronStateID;
+            if (self.StateMachine.State == id) {
+                self.StateMachine.state = Player.StStarFly;
+                orig(self, applyGravity);
+                self.StateMachine.state = id.Value;
+            } else {
+                orig(self, applyGravity);
+            }
+        }
+
+        private static void Player_Render(On.Celeste.Player.orig_Render orig, Player self) {
+            var id = self.Get<TronState>()?.TronStateID;
+            if (self.StateMachine.State == id) {
+                self.StateMachine.state = Player.StStarFly;
+                orig(self);
+                self.StateMachine.state = id.Value;
+            } else {
+                orig(self);
+            }
+        }
+
+        private static void Player_ctor(On.Celeste.Player.orig_ctor orig, Player self, Vector2 position, PlayerSpriteMode spriteMode) {
+            orig(self, position, spriteMode);
+            self.Add(new TronState());
+        }
+
         public static void Unload() {
             On.Celeste.Player.ctor -= Player_ctor;
             On.Celeste.Player.Render -= Player_Render;
+            On.Celeste.PlayerDeadBody.Awake -= PlayerDeadBody_Awake;
+            On.Celeste.Player.UpdateHair -= Player_UpdateHair;
+            On.Celeste.Player.UpdateSprite -= Player_UpdateSprite;
+            On.Celeste.Player.OnCollideH -= Player_OnCollideH;
+            On.Celeste.Player.OnCollideV -= Player_OnCollideV;
         }
     }
 }

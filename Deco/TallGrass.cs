@@ -24,7 +24,7 @@ namespace BrokemiaHelper.Deco {
             wiggles = new float[width / grass.Width];
             wiggleSpeed = data.Float("wiggleSpeed", 3f);
             wiggleFrequency = data.Float("wiggleFrequency", 1.5f);
-            minPlayerSpeedSq = data.Float("minPlayerSpeed", 100f);
+            minPlayerSpeedSq = data.Float("minPlayerSpeed", 10f);
             minPlayerSpeedSq *= minPlayerSpeedSq;
             scaleMultiplier = data.Float("scaleMultiplier", 0.1f);
             rotationMultiplier = data.Float("rotationMultiplier", 0.15f);

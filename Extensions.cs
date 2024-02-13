@@ -135,5 +135,18 @@ namespace BrokemiaHelper {
                 }
             }
         }
+
+        // https://stackoverflow.com/a/218600/6337971
+        public static float NextGaussian(this Random rand, float mean, float stdDev) {
+            double u1 = 1.0 - rand.NextDouble(); //uniform(0,1] random doubles
+            double u2 = 1.0 - rand.NextDouble();
+            double randStdNormal = Math.Sqrt(-2.0 * Math.Log(u1)) *
+                         Math.Sin(2.0 * Math.PI * u2); //random normal(0,1)
+            return mean + stdDev * (float)randStdNormal; //random normal(mean,stdDev^2)
+        }
+
+        public static float NextGaussianClamped(this Random rand, float mean, float stdDev, float min, float max) {
+            return Calc.Clamp(rand.NextGaussian(mean, stdDev), min, max);
+        }
     }
 }

@@ -279,9 +279,6 @@ namespace BrokemiaHelper
             }
             orig(self);
             //SaveData.Instance.Assists.Invincible = wasInvincible;
-            if(self.StateMachine.State != TronState.TronStateID) {
-                TronState.trailFade = Calc.Approach(TronState.trailFade, 0, 2 * Engine.DeltaTime);
-            }
         }
 
         // TODO Add back in but don't desync TAS

@@ -22,6 +22,10 @@ namespace BrokemiaHelper {
 
         private int horizontalTexturePadding;
 
+        // TODO Finish sliced sprite
+        // Support arbitrary numbers of "layers" to handle the actual spring part of the spring
+        // Each layer has a defined width + its own sliceWidths
+
         private bool slicedSprite;
 
         // left, center, right

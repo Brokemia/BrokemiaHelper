@@ -24,7 +24,7 @@ namespace BrokemiaHelper.PixelRendered {
             base.EntityAdded(scene);
             level = SceneAs<Level>();
             levelOffset = level.Bounds.Location.ToVector2();
-            chunks = new((int)Math.Ceiling(level.Bounds.Width / (float)chunkSize) + 2, (int)Math.Ceiling(level.Bounds.Width / (float)chunkSize) + 2);
+            chunks = new((int)Math.Ceiling(level.Bounds.Width / (float)chunkSize) + 2, (int)Math.Ceiling(level.Bounds.Height / (float)chunkSize) + 2);
             dirtyChunks = new(chunks.Columns, chunks.Rows);
         }
 
@@ -89,7 +89,7 @@ namespace BrokemiaHelper.PixelRendered {
             y += chunkSize;
             int chunkX = (int)Math.Floor(x / (float)chunkSize);
             int chunkY = (int)Math.Floor(y / (float)chunkSize);
-            if (chunkX < 0 || chunkX >= chunks.Columns || chunkY < 0 || chunkY >= chunks.Columns) return;
+            if (chunkX < 0 || chunkX >= chunks.Columns || chunkY < 0 || chunkY >= chunks.Rows) return;
             if (chunks[chunkX, chunkY] == null) {
                 chunks[chunkX, chunkY] = new ImageData(chunkSize, chunkSize);
             }

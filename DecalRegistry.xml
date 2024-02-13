@@ -1,5 +1,5 @@
 <decals>
   <decal path="BrokemiaHelper/windchimes/chime">
-    <BrokemiaHelper_playerMotion idle="0" active="1" delay="1" />
+    <BrokemiaHelper_playerMotion idle="0" active="1-8" delay="0.08" sfx="event:/brokemia/helper/chimes/1,event:/brokemia/helper/chimes/2,event:/brokemia/helper/chimes/3" hitboxHeight="16"/>
   </decal>
 </decals>

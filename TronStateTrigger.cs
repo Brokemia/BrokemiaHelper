@@ -22,13 +22,14 @@ namespace BrokemiaHelper {
 
         public override void OnEnter(Player player) {
             base.OnEnter(player);
-            if(player.StateMachine.State != TronState.TronStateID) {
+            var tron = player.Get<TronState>();
+            if(tron != null && player.StateMachine.State != tron.TronStateID) {
                 var pData = DynamicData.For(player);
                 pData.Set("BrokemiaHelperTronHairColor", color);
                 pData.Set("BrokemiaHelperTronSlowSpeed", slowSpeed);
                 pData.Set("BrokemiaHelperTronTargetSpeed", targetSpeed);
                 pData.Set("BrokemiaHelperTronMaxSpeed", maxSpeed);
-                TronState.StartTron(player);
+                tron.StartTron();
                 if(onlyOnce) {
                     RemoveSelf();
                 }

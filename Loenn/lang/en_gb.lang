@@ -90,6 +90,13 @@ entities.BrokemiaHelper/questionableFlagController.placements.description.contro
 entities.BrokemiaHelper/questionableFlagController.attributes.description.which=What kind of flag to set.
 entities.BrokemiaHelper/questionableFlagController.attributes.description.onlyOnce=Whether the controller should only set the flag the first time it is loaded.
 
+# Dependency Flag Controller
+entities.BrokemiaHelper/dependencyFlagController.placements.name.controller=Dependency Flag Controller
+entities.BrokemiaHelper/dependencyFlagController.placements.description.controller=A controller that sets a flag if a given mod dependency is satisfied.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.name=The mod name to check for.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.version=The mod version to check for.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.flag=The flag to set if the mod is present (defaults to "Dependency_NAME_VERSION").
+
 # Dash Spring
 entities.BrokemiaHelper/dashSpring.placements.name.up=Dash Spring (Up)
 entities.BrokemiaHelper/dashSpringDown.placements.name.down=Dash Spring (Down)
@@ -156,6 +163,8 @@ entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.highlightT
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.startFlag=A flag that activates the block when set. Leave blank for no flag required.
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.startDelay=Changes the time it takes for the block to start moving after being activated.
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.travelTime=Changes the time it takes for the block to travel between nodes.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.perNodeTravelTimes=Changes the time it takes for the block to travel to each node.\nExpressed as a comma-separated list of numbers.\nThe "Travel Time" field will be ignored if this is set.
+entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.stopNode=Chooses a node for the block to stop at forever.\nNodes are indexed starting from 0.\nLeave as -1 for no stop.
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.surfaceSoundIndex=Footstep sound when walking on the block.
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.easing=How the speed of the block changes while moving between nodes.\nLinear moves at a constant speed. CubeIn is vanilla behavior.
 
@@ -222,6 +231,42 @@ entities.BrokemiaHelper/vineinator.attributes.description.thornColor=The color o
 entities.BrokemiaHelper/vineinator.attributes.description.hangingVineColor=The color of the hanging vines.
 entities.BrokemiaHelper/vineinator.attributes.description.depth=The depth of the vines.\nBackground decals are 9000. Foreground decals are -10500.
 
+# Thorn Growers
+entities.BrokemiaHelper/thornGrowers.placements.name.thornGrowers=Thorn Growers
+entities.BrokemiaHelper/thornGrowers.placements.description.thornGrowers=Procedurally generated tall thorny plants.\nBased on a plant of the same name in Rain World.
+entities.BrokemiaHelper/thornGrowers.attributes.description.randomSeed=The seed used to generate the thorn growers.\nLeaving this as 0 will automatically choose a seed (note that the automatic seed is load order dependent).
+entities.BrokemiaHelper/thornGrowers.attributes.description.depth=The depth of the thorn growers.\nBackground decals are 9000. Foreground decals are -10500.
+entities.BrokemiaHelper/thornGrowers.attributes.description.minGrowers=The minimum number of stalks to generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.maxGrowers=The maximum number of stalks to generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.clampGrowerPos=Whether growers can only generate within the bounding box horizontally.\nThe position of growers follows a gaussian distribution, so there's a low chance they might generate outside otherwise.
+entities.BrokemiaHelper/thornGrowers.attributes.description.heightFractionMin=The minimum length of the growers as a fraction of the height of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightFraction=A factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightVariation=A random factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerAngleRange=How much growers at the center can bend from perfectly vertical at the center of the bounding box (radians).\nThis is blended with "Edge Angle Range" based on how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.edgeAngleRange=How much growers at the edge can bend from perfectly vertical at the edges of the bounding box (radians).\nThis is blended with "Center Angle Range" based on how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMin=The minimum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
+entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMax=The maximum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseColor=The color of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopColor=The color of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderMax=How much the stalks can deviate from a perfect arc.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderAcceleration=How fast the stalks can deviate from a perfect arc.\nKind of a "wiggliness" factor.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMin=The minimum thickness of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMax=The maximum thickness of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMin=The minimum thickness of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMax=The maximum thickness of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkThicknessDistribution=How the thickness of the stalks is distributed.\n"Linear" means all thicknesses are equally likely.\n"QuadIn" means thinner stalks are more common than thicker.\nBased on easing modes if you know what those are.
+entities.BrokemiaHelper/thornGrowers.attributes.description.hasThorns=Whether the growers have thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.baseThornColor=The color of the thorns near the base.
+entities.BrokemiaHelper/thornGrowers.attributes.description.topThornColor=The color of the thorns near the top.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornExtent=How far the thorns stick out from the stalk.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxLength=The maximum length of the thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinLength=The minimum length of the thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornBaseDist=The minimum distance from the base of the stalks that thorns can generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinSpacing=The minimum spacing between thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxSpacing=The maximum spacing between thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornThickness=How thick the thorns are.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornDirection=Which angle thorns extend from the stalk before heading up (radians).
+
 # Rain World Lizard
 entities.BrokemiaHelper/rwLizard.placements.name.lizard=Rain World Lizard
 
@@ -268,6 +313,19 @@ entities.BrokemiaHelper/tallGrass.attributes.description.rotationMultiplier=How 
 entities.BrokemiaHelper/theoRespawn.placements.name.respawn=Theo Respawn
 entities.BrokemiaHelper/theoRespawn.placements.description.respawn=When the player enters this room, a Theo Crystal will spawn at the Theo Respawn closest to the player.
 entities.BrokemiaHelper/theoRespawn.attributes.description.flag=The flag that must be active for this Theo Respawn to activate.
+
+# Noodle Emitter
+entities.BrokemiaHelper/noodleEmitter.placements.name.emitter=Noodle Emitter
+entities.BrokemiaHelper/noodleEmitter.placements.description.emitter=Emits noodle creatures.
+entities.BrokemiaHelper/noodleEmitter.attributes.description.sprite=The sprite to be used for the emitter.
+entities.BrokemiaHelper/noodleEmitter.attributes.description.editorTexture=The texture displayed in Loenn.\nThis is just so you can line up the nodes right and has no effect in-game.
+
+# Universal Accelerator
+entities.BrokemiaHelper/universalAccelerator.placements.name.accelerator=Universal Accelerator
+entities.BrokemiaHelper/universalAccelerator.placements.description.accelerator=Accelerates the player or holdables at a constant rate once they touch the accelerator.
+entities.BrokemiaHelper/universalAccelerator.attributes.description.acceleration=How fast to accelerate the player.
+entities.BrokemiaHelper/universalAccelerator.attributes.description.terminalVelocity=The maximum speed this will accelerate the player at.
+
 
 # Persistent Mini Textbox Trigger
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.name.trigger=Persistent MiniTextbox

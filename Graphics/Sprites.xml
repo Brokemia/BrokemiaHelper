@@ -10,4 +10,13 @@
 		<Loop id="idle" path="large" frames="0-1" delay="0.6"/>
 		<Loop id="scatter" path="large" frames="2-4,3" delay="0.6"/>
 	</BrokemiaHelper_DandelionLarge>
+	<BrokemiaHelper_NoodleEmitter_A path="objects/BrokemiaHelper/noodleEmitter/A/" start="idle">
+		<Center />
+	
+		<Loop id="idle" path="idle" frames="0" delay="1"/>
+		<Anim id="emit0" path="emit0_" frames="0-3,2-0" delay="0.1" goto="idle"/>
+		<Anim id="emit1" path="emit1_" frames="0-3,2-0" delay="0.1" goto="idle"/>
+		<Anim id="emit2" path="emit2_" frames="0-3,2-0" delay="0.1" goto="idle"/>
+		<Anim id="emit3" path="emit3_" frames="0-3,2-0" delay="0.1" goto="idle"/>
+	</BrokemiaHelper_NoodleEmitter_A>
 </Sprites>

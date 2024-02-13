@@ -13,7 +13,8 @@ namespace BrokemiaHelper {
 
         public override void OnEnter(Player player) {
             base.OnEnter(player);
-            if(player.StateMachine.State == TronState.TronStateID) {
+            var tron = player.Get<TronState>();
+            if(tron != null && player.StateMachine.State == tron.TronStateID) {
                 player.StateMachine.State = Player.StNormal;
                 if (onlyOnce) {
                     RemoveSelf();
