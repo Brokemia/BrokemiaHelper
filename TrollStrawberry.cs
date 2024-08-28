@@ -10,6 +10,7 @@ using System.Reflection;
 
 namespace BrokemiaHelper {
     [CustomEntity("BrokemiaHelper/trollStrawberry")]
+    [RegisterStrawberry(false, false)]
     public class TrollStrawberry : Entity, IStrawberrySeeded {
 
         public EntityID ID;
@@ -58,17 +59,6 @@ namespace BrokemiaHelper {
         public bool Moon {
             get;
             private set;
-        }
-
-        private bool IsFirstStrawberry {
-            get {
-                for (int i = Follower.FollowIndex - 1; i >= 0; i--) {
-                    if (Follower.Leader.Followers[i].Entity is Strawberry strawberry && !strawberry.Golden) {
-                        return false;
-                    }
-                }
-                return true;
-            }
         }
 
         public List<GenericStrawberrySeed> Seeds => seeds;
@@ -148,7 +138,7 @@ namespace BrokemiaHelper {
                     sprite.Y = (bloom.Y = (light.Y = (float)Math.Sin(wobble) * 2f));
                 }
                 int followIndex = Follower.FollowIndex;
-                if (Follower.Leader != null && Follower.DelayTimer <= 0f && IsFirstStrawberry) {
+                if (Follower.Leader != null && Follower.DelayTimer <= 0f && StrawberryRegistry.IsFirstStrawberry(this)) {
                     bool collectable = false;
                     if (Follower.Leader.Entity is Player player && player.Scene != null && !player.StrawberriesBlocked) {
                         collectable = player.OnSafeGround && (!Moon || player.StateMachine.State != 13);

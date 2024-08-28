@@ -1,50 +1,34 @@
 ﻿using System;
-using System.Reflection;
 using Celeste;
 using Microsoft.Xna.Framework;
 using Monocle;
+using Celeste.Mod.Entities;
 
 namespace BrokemiaHelper
 {
-    public class CassetteCassette : Cassette, CassetteEntity
+    [CustomEntity("brokemiahelper/cassetteCassette")]
+    public class CassetteCassette : Cassette
     {
-        public int Index;
-
-        public float Tempo;
-
-        public bool Activated;
-
-        public CassetteModes Mode;
-
-        public EntityID ID;
-
-        private int blockHeight = 2;
-
         private Color color;
         private Color disabledColor;
 
         protected Color defaultImageColor = new Color(255, 255, 255, 255);
 
-        private Wiggler wiggler;
+        private CassetteListener cassetteListener;
 
-        private Vector2 wigglerScaler;
-
-        protected FieldInfo spriteInfo = typeof(Cassette).GetField("sprite", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.GetField);
-
-        EntityID CassetteEntity.ID { get => ID; set => ID = value; }
-        int CassetteEntity.Index { get => Index; set => Index = value; }
-        bool CassetteEntity.Activated { get => Activated; set => Activated = value; }
-        float CassetteEntity.Tempo { get => Tempo; set => Tempo = value; }
-
-        public CassetteCassette(EntityData data, Vector2 offset) : base(data, offset)
+        public CassetteCassette(EntityData data, Vector2 offset, EntityID id) : base(data, offset)
         {
-            Index = data.Int("index");
-            Tempo = data.Float("tempo", 1f);
+            Add(cassetteListener = new CassetteListener(
+                id,
+                data.Int("index"),
+                data.Float("tempo", 1f)
+            ) {
+                OnFinish = Finish,
+                OnWillActivate = WillToggle,
+                OnWillDeactivate = WillToggle,
+                OnStart = OnStart
+            });
             Collidable = false;
-            ID = new EntityID(data.Level.Name, data.ID);
-            color = GetColorFromIndex(Index);
-            Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
         }
 
         public static Color GetColorFromIndex(int index)
@@ -65,36 +49,19 @@ namespace BrokemiaHelper
         public override void Awake(Scene scene)
         {
             base.Awake(scene);
-            float num = Left;
-            float num2 = Right;
-            float num3 = Bottom;
-            float num4 = Top;
-            color = GetColorFromIndex(Index);
+            color = GetColorFromIndex(cassetteListener.Index);
             Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
-            Vector2 gOrigin = new Vector2((int)(num + (num2 - num) / 2f), (int)num4);
-            wigglerScaler = new Vector2(Calc.ClampedMap(num2 - num, 32f, 96f, 1f, 0.2f), Calc.ClampedMap(num4 - num3, 32f, 96f, 1f, 0.2f));
-            Add(wiggler = Wiggler.Create(0.3f, 3f));
+            disabledColor = new Color(c.R / 255f * (color.R / 255f), c.G / 255f * (color.G / 255f), c.B / 255f * (color.B / 255f), 1f);
             UpdateVisualState();
         }
 
-        public void MoveVExact(int move)
-        {
-            Y += move;
-        }
-
-        public override void Update()
-        {
+        public override void Update() {
             base.Update();
 
-            if (Activated && !Collidable)
-            {
+            if (cassetteListener.Activated && !Collidable) {
                 Collidable = true;
                 ShiftSize(-1);
-                wiggler.Start();
-            }
-            else if (!Activated && Collidable)
-            {
+            } else if (!cassetteListener.Activated && Collidable) {
                 ShiftSize(1);
                 Collidable = false;
             }
@@ -104,13 +71,13 @@ namespace BrokemiaHelper
         private void UpdateVisualState()
         {
             Depth = !Collidable ? 8990 : -8500;
-            if(spriteInfo.GetValue(this) != null)
-                ((Sprite)spriteInfo.GetValue(this)).Color = Collidable ? color : disabledColor;
+            if(sprite != null)
+                sprite.Color = Collidable ? color : disabledColor;
         }
 
-        public void SetActivatedSilently(bool activated)
+        public void OnStart(bool activated)
         {
-            Activated = Collidable = activated;
+            Collidable = activated;
             UpdateVisualState();
             if (activated)
             {
@@ -121,7 +88,7 @@ namespace BrokemiaHelper
 
         public void Finish()
         {
-            Activated = false;
+            cassetteListener.Activated = false;
         }
 
         public void WillToggle()
@@ -132,9 +99,7 @@ namespace BrokemiaHelper
 
         private void ShiftSize(int amount)
         {
-            MoveVExact(amount);
-            blockHeight -= amount;
+            Y += amount;
         }
-
     }
 }

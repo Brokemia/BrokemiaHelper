@@ -23,6 +23,9 @@ return {
             rotationMultiplier = 0.15
         }
     },
+    minimumSize = function(room, entity)
+        return atlases.getResource(entity.grassTexture, "Gameplay").width or 1, 1
+    end,
     sprite = function(room, entity)
         local step = atlases.getResource(entity.grassTexture, "Gameplay").width or 1
     

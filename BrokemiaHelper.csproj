@@ -1,139 +1,66 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{FDB62D45-C428-4DEE-9DBC-5E8511D64E8E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <RootNamespace>BrokemiaHelper</RootNamespace>
+    <TargetFramework>net7.0</TargetFramework>
     <AssemblyName>BrokemiaHelper</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <RootNamespace>BrokemiaHelper</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <CelestePrefix Condition="'$(CelestePrefix)' == '' And Exists('..\..\Celeste.dll')">..\..</CelestePrefix>
+    <CelestePrefix Condition="'$(CelestePrefix)' == ''">lib-stripped</CelestePrefix>
+	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <LangVersion>Latest</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release</OutputPath>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
-    <LangVersion>Latest</LangVersion>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+
+  <!--Disable "Copy Local" for all references-->
+  <ItemDefinitionGroup>
+    <PackageReference PrivateAssets="all" ExcludeAssets="runtime" />
+    <Reference Private="false" />
+  </ItemDefinitionGroup>
+
   <ItemGroup>
-    <Reference Include="Celeste">
-      <HintPath>lib-stripped\Celeste.exe</HintPath>
+    <PackageReference Include="MonoMod.Patcher" Version="25.0.0-prerelease.2" />
+    <PackageReference Include="MonoMod.RuntimeDetour" Version="25.0.2" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="lib-stripped\Celeste.dll">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="$(CelestePrefix)\MMHOOK_Celeste.dll">
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="$(CelestePrefix)\FNA.dll">
+      <Private>false</Private>
+    </Reference>
+	<!--Reference Include="$(CelestePrefix)\Mono.Cecil.dll">
+      <Private>false</Private>
+    </Reference-->
+    <Reference Include=".\lib-stripped\CelesteNet.Client.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="CelesteNet.Client">
-      <HintPath>..\_hidden\CelesteNet.Client.dll</HintPath>
+    <Reference Include=".\lib-stripped\CelesteNet.Shared.dll">
       <Private>False</Private>
     </Reference>
-    <Reference Include="CelesteNet.Shared">
-      <HintPath>..\_hidden\CelesteNet.Shared.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Mono.Cecil">
-      <HintPath>..\..\Mono.Cecil.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod">
-      <HintPath>..\..\MonoMod.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\System.ValueTuple.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="FNA">
-      <HintPath>..\..\FNA.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MMHOOK_Celeste">
-      <HintPath>..\..\MMHOOK_Celeste.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="YamlDotNet">
+	<!--Reference Include="YamlDotNet">
       <HintPath>..\..\..\..\..\Games\epic-games-store\drive_c\Program Files\Epic Games\Celeste\YamlDotNet.dll</HintPath>
       <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>..\..\MonoMod.RuntimeDetour.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="MonoMod.Utils">
+    </Reference-->
+	<!--Reference Include="MonoMod.Utils">
       <HintPath>..\..\MonoMod.Utils.dll</HintPath>
       <Private>False</Private>
-    </Reference>
+    </Reference-->
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BrokemiaHelperSession.cs" />
-    <Compile Include="Carcinization.cs" />
-    <Compile Include="CelesteNet\BrokemiaHelperCelesteNetComponent.cs" />
-    <Compile Include="BrokemiaHelperModule.cs" />
-    <Compile Include="CaveWall.cs" />
-    <Compile Include="CelesteNetFlagSynchronizer.cs" />
-    <Compile Include="CelesteNet\FlagData.cs" />
-    <Compile Include="BigSpring.cs" />
-    <Compile Include="Cassette\DecalCassetteAnimator.cs" />
-    <Compile Include="Deco\Dandelion.cs" />
-    <Compile Include="Deco\FlowerField.cs" />
-    <Compile Include="Deco\Noodle.cs" />
-    <Compile Include="Deco\NoodleEmitter.cs" />
-    <Compile Include="Deco\PlayerMotionComponent.cs" />
-    <Compile Include="Deco\TallGrass.cs" />
-    <Compile Include="Deco\ThornGrowers.cs" />
-    <Compile Include="DependencyFlagController.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="FloatierSpaceBlock.cs" />
-    <Compile Include="ImagineAWorldWhereTextboxesDoNotHavePortraitsThisIsTheTwilightZone.cs" />
-    <Compile Include="NeutralDeathPenaltyTrigger.cs" />
-    <Compile Include="PersistentMiniTextbox.cs" />
-    <Compile Include="PersistentMiniTextboxTrigger.cs" />
-    <Compile Include="PixelRendered\ImageData.cs" />
-    <Compile Include="MoveBlockBarrier.cs" />
-    <Compile Include="MoveBlockBarrierRenderer.cs" />
-    <Compile Include="PixelRendered\PixelComponent.cs" />
-    <Compile Include="PixelRendered\RWLizard.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QuestionableFlagController.cs" />
-    <Compile Include="ShadowCrushBlock.cs" />
-    <Compile Include="TheoRespawn.cs" />
-    <Compile Include="TrollStrawberry.cs" />
-    <Compile Include="PixelRendered\Vineinator.cs" />
-    <Compile Include="TronState.cs" />
-    <Compile Include="TronStateTrigger.cs" />
-    <Compile Include="TronStateUntrigger.cs" />
-    <Compile Include="UniversalAccelerator.cs" />
-    <Compile Include="WhiteBooster.cs" />
-    <Compile Include="FakeBooster.cs" />
-    <Compile Include="Cassette\CassetteIntroCar.cs" />
-    <Compile Include="Cassette\CassetteEntity.cs" />
-    <Compile Include="Cassette\CassetteSpinner.cs" />
-    <Compile Include="Cassette\CassetteDreamBlock.cs" />
-    <Compile Include="Cassette\CassetteCassette.cs" />
-    <Compile Include="Cassette\CassetteZipMover.cs" />
-    <Compile Include="CelesteInCeleste.cs" />
-    <Compile Include="DashSpring.cs" />
-    <Compile Include="NonBadelineMovingBlock.cs" />
-    <Compile Include="CursedTeleportTrigger.cs" />
-    <Compile Include="BrokemiaHelperMapDataProcessor.cs" />
-  </ItemGroup>
+
+  <Target Name="CopyFiles" AfterTargets="Build">
+    <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="bin" />
+    <Copy SourceFiles="$(OutputPath)\$(AssemblyName).pdb" DestinationFolder="bin" />
+  </Target>
+
+  <PropertyGroup>
+    <PathMap>$(MSBuildProjectDirectory)=BrokemiaHelper/</PathMap>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Include="CarcinizationHelper.zip" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
 </Project>

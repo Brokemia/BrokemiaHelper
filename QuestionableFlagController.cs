@@ -1,6 +1,7 @@
 ﻿using Celeste;
 using Celeste.Mod;
 using Celeste.Mod.Entities;
+using Celeste.Mod.Helpers.LegacyMonoMod;
 using Microsoft.Xna.Framework;
 using Monocle;
 using MonoMod.Utils;
@@ -79,7 +80,7 @@ namespace BrokemiaHelper {
                 case QuestionableFlags.PlayMode:
                     return FLAG_PREFIX + "PlayMode_" + Celeste.Celeste.PlayMode;
                 case QuestionableFlags.Platform:
-                    return FLAG_PREFIX + "Platform_" + PlatformHelper.Current;
+                    return FLAG_PREFIX + "Platform_" + LegacyPlatformHelper.Current;
             }
             throw new Exception("Unsupported flag in QuestionableFlagController");
         }

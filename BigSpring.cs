@@ -91,7 +91,7 @@ namespace BrokemiaHelper {
             }
         }
 
-        protected void OnCollide(Player player) {
+        protected new void OnCollide(Player player) {
             if (dashSpring && (player.StateMachine.State == 9 || !(bool)playerCanUseInfo.GetValue(this) || !player.DashAttacking)) {
                 return;
             }

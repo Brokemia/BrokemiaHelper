@@ -1,26 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using Celeste;
+using Celeste.Mod.Entities;
 using Microsoft.Xna.Framework;
 using Monocle;
 
 namespace BrokemiaHelper
 {
-    public class CassetteSpinner : CrystalStaticSpinner, CassetteEntity
+    [CustomEntity("brokemiahelper/cassetteSpinner")]
+    public class CassetteSpinner : CrystalStaticSpinner
     {
-        public int Index;
-
-        public float Tempo;
-
-        public bool Activated;
-
-        public CassetteModes Mode;
-
-        public EntityID ID;
-
-        private int blockHeight = 2;
-
         private Color color;
         private Color disabledColor;
 
@@ -30,36 +19,22 @@ namespace BrokemiaHelper
 
         private Vector2 wigglerScaler;
 
-        protected static FieldInfo filler = typeof(CrystalStaticSpinner).GetField("filler", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
+        private CassetteListener cassetteListener;
 
-        protected static FieldInfo border = typeof(CrystalStaticSpinner).GetField("border", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        protected static FieldInfo offset = typeof(CrystalStaticSpinner).GetField("offset", BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        protected static MethodInfo ClearSprites = typeof(CrystalStaticSpinner).GetMethod("ClearSprites", BindingFlags.InvokeMethod | BindingFlags.NonPublic | BindingFlags.Instance);
-
-        EntityID CassetteEntity.ID { get => ID; set => ID = value; }
-        int CassetteEntity.Index { get => Index; set => Index = value; }
-        bool CassetteEntity.Activated { get => Activated; set => Activated = value; }
-        float CassetteEntity.Tempo { get => Tempo; set => Tempo = value; }
-
-        public CassetteSpinner(Vector2 position, EntityID id, int index, float tempo, bool attachToSolid)
-            : base(position, attachToSolid, CrystalColor.Rainbow)
+        public CassetteSpinner(EntityData data, Vector2 offset, EntityID id)
+            : base(data.Position + offset, data.Bool("attachToSolid"), CrystalColor.Rainbow)
         {
-            Index = index;
-            Tempo = tempo;
+            Add(cassetteListener = new CassetteListener(
+                id,
+                data.Int("index"),
+                data.Float("tempo", 1f)
+            ) {
+                OnWillActivate = WillToggle,
+                OnWillDeactivate = WillToggle,
+                OnStart = OnStart
+            });
+            
             Collidable = false;
-            ID = id;
-            color = GetColorFromIndex(Index);
-            Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
-        }
-
-        public CassetteSpinner(EntityData data, Vector2 offset, EntityID id) : this(data.Position + offset, id, data.Int("index"), data.Float("tempo", 1f), data.Bool("attachToSolid")) {}
-
-        public CassetteSpinner(EntityData data, Vector2 offset)
-            : this(data, offset, new EntityID(data.Level.Name, data.ID))
-        {
         }
 
         public static Color GetColorFromIndex(int index)
@@ -80,9 +55,9 @@ namespace BrokemiaHelper
         public void MoveVExact(int move)
         {
             Y += move;
-            if(filler.GetValue(this) != null)
+            if(filler != null)
             {
-                ((Entity)filler.GetValue(this)).Y += move;
+                filler.Y += move;
             }
         }
 
@@ -90,20 +65,18 @@ namespace BrokemiaHelper
         {
             foreach (Component component in Components)
             {
-                Image image = component as Image;
-                if (image != null)
+                if (component is Image image)
                 {
                     image.Color = c;
                 }
             }
-            if (filler.GetValue(this) != null)
+            if (filler != null)
             {
-                foreach (Component component2 in ((Entity)filler.GetValue(this)).Components)
+                foreach (Component component in filler.Components)
                 {
-                    Image image2 = component2 as Image;
-                    if (image2 != null)
+                    if (component is Image image)
                     {
-                        image2.Color = c;
+                        image.Color = c;
                     }
                 }
             }
@@ -111,28 +84,24 @@ namespace BrokemiaHelper
 
         private void UpdateDepth(int d)
         {
-            if (filler.GetValue(this) != null)
+            if (filler != null)
             {
-                ((Entity)filler.GetValue(this)).Depth = d + 1;
+                filler.Depth = d + 1;
             }
-            if (border.GetValue(this) != null)
+            if (border != null)
             {
-                ((Entity)border.GetValue(this)).Depth = d + 2;
+                border.Depth = d + 2;
             }
         }
 
         public override void Awake(Scene scene)
         {
             base.Awake(scene);
-            float num = Left;
-            float num2 = Right;
-            float num3 = Bottom;
-            float num4 = Top;
-            color = GetColorFromIndex(Index);
+            color = GetColorFromIndex(cassetteListener.Index);
             Color c = Calc.HexToColor("667da5");
-            disabledColor = new Color((float)(int)c.R / 255f * ((float)(int)this.color.R / 255f), (float)(int)c.G / 255f * ((float)(int)this.color.G / 255f), (float)(int)c.B / 255f * ((float)(int)this.color.B / 255f), 1f);
-            Vector2 gOrigin = new Vector2((int)(num + (num2 - num) / 2f), (int)num4);
-            wigglerScaler = new Vector2(Calc.ClampedMap(num2 - num, 32f, 96f, 1f, 0.2f), Calc.ClampedMap(num4 - num3, 32f, 96f, 1f, 0.2f));
+            disabledColor = new Color(c.R / 255f * (color.R / 255f), c.G / 255f * (color.G / 255f), c.B / 255f * (color.B / 255f), 1f);
+            Vector2 gOrigin = new Vector2((int)(Left + (Right - Left) / 2f), (int)Top);
+            wigglerScaler = new Vector2(Calc.ClampedMap(Right - Left, 32f, 96f, 1f, 0.2f), Calc.ClampedMap(Top - Bottom, 32f, 96f, 1f, 0.2f));
             Add(wiggler = Wiggler.Create(0.3f, 3f));
             UpdateVisualState();
         }
@@ -144,13 +113,13 @@ namespace BrokemiaHelper
             base.Update();
             Collidable = collidable;
 
-            if (Activated && !Collidable)
+            if (cassetteListener.Activated && !Collidable)
             {
                 Collidable = true;
                 ShiftSize(-1);
                 wiggler.Start();
             }
-            else if (!Activated && Collidable)
+            else if (!cassetteListener.Activated && Collidable)
             {
                 ShiftSize(1);
                 Collidable = false;
@@ -165,20 +134,15 @@ namespace BrokemiaHelper
             UpdateHue(Collidable ? color : disabledColor);
         }
 
-        public void SetActivatedSilently(bool activated)
+        public void OnStart(bool activated)
         {
-            Activated = Collidable = activated;
+            Collidable = activated;
             UpdateVisualState();
             if (activated)
             {
                 return;
             }
             ShiftSize(2);
-        }
-
-        public void Finish()
-        {
-            Activated = false;
         }
 
         public void WillToggle()
@@ -190,7 +154,6 @@ namespace BrokemiaHelper
         private void ShiftSize(int amount)
         {
             MoveVExact(amount);
-            blockHeight -= amount;
         }
     }
 }

@@ -14,6 +14,7 @@ using MonoMod.Utils;
 using Celeste.Mod.CelesteNet.Client;
 using System.Runtime.CompilerServices;
 using BrokemiaHelper.Deco;
+using Celeste.Mod.Helpers.LegacyMonoMod;
 
 // WhiteBooster, CassetteZipMover, and CelesteInCeleste commented out for a mostly-functioning release
 [assembly: IgnoresAccessChecksTo("Celeste")]
@@ -85,11 +86,6 @@ namespace BrokemiaHelper
             };
             On.Celeste.Player.Update += Player_Update;
             On.Celeste.DreamBlock.OneUseDestroy += DreamBlock_OneUseDestroy;
-            On.Celeste.CassetteBlockManager.StopBlocks += CassetteBlockManager_StopBlocks;
-            On.Celeste.CassetteBlockManager.SilentUpdateBlocks += CassetteBlockManager_SilentUpdateBlocks;
-            On.Celeste.CassetteBlockManager.SetActiveIndex += CassetteBlockManager_SetActiveIndex;
-            On.Celeste.CassetteBlockManager.SetWillActivate += CassetteBlockManager_SetWillActivate;
-            On.Celeste.Level.LoadLevel += Level_LoadLevel;
 
             On.Celeste.Actor.MoveVExact += Actor_MoveVExact;
             On.Celeste.Actor.MoveHExact += Actor_MoveHExact;
@@ -112,8 +108,8 @@ namespace BrokemiaHelper
 #endif
 
             DecalRegistry.AddPropertyHandler("BrokemiaHelper_cassetteAnimated", (decal, attrs) => {
-                int[] beatFrames = new[] { 0, 0, 0, 0 };
-                string[] attrNames = new[] { "redFrame", "blueFrame", "yellowFrame", "greenFrame" };
+                int[] beatFrames = [0, 0, 0, 0];
+                string[] attrNames = ["redFrame", "blueFrame", "yellowFrame", "greenFrame"];
                 int last = 0;
 
                 for(int i = 0; i < attrNames.Length; i++) {
@@ -130,7 +126,7 @@ namespace BrokemiaHelper
 
             // Stuff that doesn't always run orig(self) and therefore should run after every hook
             /* ******************************************* */
-            using (new DetourContext("BrokemiaHelper")
+            using (new LegacyDetourContext("BrokemiaHelper")
             {
                 Before = { "*" }
             })
@@ -178,47 +174,6 @@ namespace BrokemiaHelper
             }
             bool res = orig(self, moveH, onCollide, pusher);
             return res;
-        }
-
-        void CassetteBlockManager_SetActiveIndex(On.Celeste.CassetteBlockManager.orig_SetActiveIndex orig, CassetteBlockManager self, int index) {
-            if (self.Scene != null) {
-                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                    entity.Activated = (entity.Index == index);
-                }
-            }
-            orig(self, index);
-        }
-
-        void CassetteBlockManager_StopBlocks(On.Celeste.CassetteBlockManager.orig_StopBlocks orig, CassetteBlockManager self) {
-            if (self.Scene != null) {
-                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                    entity.Finish();
-                }
-            }
-            orig(self);
-        }
-
-        void CassetteBlockManager_SilentUpdateBlocks(On.Celeste.CassetteBlockManager.orig_SilentUpdateBlocks orig, CassetteBlockManager self) {
-            DynData<CassetteBlockManager> selfData = new DynData<CassetteBlockManager>(self);
-            if (self.Scene != null) {
-                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                    if (entity.ID.Level == self.SceneAs<Level>().Session.Level) {
-                        entity.SetActivatedSilently(entity.Index == self.currentIndex);
-                    }
-                }
-            }
-            orig(self);
-        }
-
-        void CassetteBlockManager_SetWillActivate(On.Celeste.CassetteBlockManager.orig_SetWillActivate orig, CassetteBlockManager self, int index) {
-            if (self.Scene != null) {
-                foreach (CassetteEntity entity in self.Scene.Entities.OfType<CassetteEntity>()) {
-                    if (entity.Index == index || entity.Activated) {
-                        entity.WillToggle();
-                    }
-                }
-            }
-            orig(self, index);
         }
 
         void DreamBlock_OneUseDestroy(On.Celeste.DreamBlock.orig_OneUseDestroy orig, DreamBlock self) {
@@ -309,58 +264,15 @@ namespace BrokemiaHelper
             }
         }
 
-        private bool createdCassetteManager;
-        private void Level_LoadLevel(On.Celeste.Level.orig_LoadLevel orig, Level self, Player.IntroTypes playerIntro, bool isFromLoader) {
-            createdCassetteManager = false;
-            orig(self, playerIntro, isFromLoader);
-        }
-
         bool Level_OnLoadEntity(Level level, LevelData levelData, Vector2 offset, EntityData entityData)
         {
             if (entityData.Name.StartsWith("brokemiahelper/", StringComparison.InvariantCulture))
             {
-                CassetteEntity cassetteEntity = null;
                 switch (entityData.Name.Substring("brokemiahelper/".Length))
                 {
                     //case "whitebooster":
                         //level.Add(new WhiteBooster(entityData, offset));
                         //return true;
-                    case "cassetteIntroCar":
-                        cassetteEntity = new CassetteIntroCar(entityData, offset);
-                        break;
-                    case "cassetteSpinner":
-                        cassetteEntity = new CassetteSpinner(entityData, offset);
-                        break;
-                    case "cassetteDreamBlock":
-                        cassetteEntity = new CassetteDreamBlock(entityData, offset);
-                        break;
-                    case "cassetteCassette":
-                        cassetteEntity = new CassetteCassette(entityData, offset);
-                        break;
-                    //case "cassetteZipMover":
-                        //cassetteEntity = new CassetteZipMover(entityData, offset);
-                        //break;
-                }
-
-                if(cassetteEntity != null)
-                {
-                    level.Add((Entity)cassetteEntity);
-                    level.HasCassetteBlocks = true;
-                    if (level.CassetteBlockTempo == 1f)
-                    {
-                        level.CassetteBlockTempo = cassetteEntity.Tempo;
-                    }
-                    level.CassetteBlockBeats = Math.Max(cassetteEntity.Index + 1, level.CassetteBlockBeats);
-                    
-                    if (!createdCassetteManager) {
-                        createdCassetteManager = true;
-                        if (level.Tracker.GetEntity<CassetteBlockManager>() == null && level.ShouldCreateCassetteManager) {
-                            if (!level.Entities.ToAdd.Any(e => e is CassetteBlockManager)) {
-                                level.Entities.ForceAdd(new CassetteBlockManager());
-                            }
-                        }
-                    }
-                    return true;
                 }
             }
             return false;

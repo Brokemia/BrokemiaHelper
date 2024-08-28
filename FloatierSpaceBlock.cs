@@ -99,7 +99,7 @@ namespace BrokemiaHelper {
             LiftSpeed = Vector2.Zero;
         }
 
-        private void MoveToTarget() {
+        private new void MoveToTarget() {
             float sineWavePos = (float)Math.Sin((float)sineWaveInfo.GetValue(this)) * 4f;
             Vector2 dashOffset = Calc.YoYo(Ease.QuadIn((float)dashEaseInfo.GetValue(this))) * (Vector2)dashDirectionInfo.GetValue(this) * 8f * dashOffsetMultiplier;
             for (int i = 0; i < 2; i++) {
