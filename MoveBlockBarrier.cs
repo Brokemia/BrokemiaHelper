@@ -25,7 +25,9 @@ namespace BrokemiaHelper {
             "Celeste.Mod.CommunalHelper.Entities.ConnectedStuff.EquationMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Celeste.Mod.CommunalHelper.ConnectedMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             // Crystalline Helper
-            "vitmod.VitMoveBlock, vitmod, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+            "vitmod.VitMoveBlock, vitmod, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            // Dzhake Helper
+            "Celeste.Mod.DzhakeHelper.Entities.CustomMoveBlock, DzhakeHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         });
 
         static List<Hook> ExtraMoveBlockHooks = new();
@@ -68,7 +70,10 @@ namespace BrokemiaHelper {
             // Automatically hook the MoveCheck method of other MoveBlock variants
             foreach (string moveBlockType in ExtraMoveBlockTypes) {
                 MethodInfo moveCheckInfo;
-                if ((moveCheckInfo = Type.GetType(moveBlockType)?.GetMethod("MoveCheck", BindingFlags.NonPublic | BindingFlags.Instance)) != null) {
+                var blockClass = Type.GetType(moveBlockType);
+                if ((moveCheckInfo = blockClass?.GetMethod("MoveCheck", BindingFlags.NonPublic | BindingFlags.Instance)) != null
+                    // DzhakeHelper seems to have copied from the publicizer
+                    || (moveCheckInfo = blockClass?.GetMethod("MoveCheck", BindingFlags.Public | BindingFlags.Instance)) != null) {
                     ExtraMoveBlockHooks.Add(new Hook(moveCheckInfo, ((Func<Func<Entity, Vector2, bool>, Entity, Vector2, bool>)ExtraMoveBlock_MoveCheck).Method));
                 }
             }
