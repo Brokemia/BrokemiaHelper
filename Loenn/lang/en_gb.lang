@@ -8,19 +8,33 @@
 mods.BrokemiaHelper.name=Brokemia Helper
 mods.brokemiahelper.name=Brokemia Helper
 
-# Floatier Space Block
-entities.BrokemiaHelper/floatierSpaceBlock.placements.name.floatier_space_block=Floatier Space Block
-entities.BrokemiaHelper/floatierSpaceBlock.placements.description.floatier_space_block=Floaty Space Block but with customizable values for many different parameters.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.disableSpawnOffset=Whether or not the entity should spawn without the random offset.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.floatinessMultiplier=A multiplier for how far the block sinks.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.tiletype=Determines the visual appearance of the wall.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.bounceBackMultiplier=A multiplier for how fast the block bounces back when dashed into.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.dashOffsetMultiplier=A multiplier for how far the block gets pushed back when dashed into.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.naturalFloatiness=A multiplier for how much the block naturally bobs up and down.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkAmount=The number of pixels the block will sink to when a player is riding it.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkDelay=How long it takes for a block to begin rising again after a player steps off of it.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkSpeed=How fast the block sinks when a player is riding it.
-entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkSpeed=How fast the block rises back to its normal position after a player steps off of it.
+## Entities (alphabetical)
+
+# Big Spring
+entities.BrokemiaHelper/bigSpring.placements.name.up=Big Spring (Up)
+entities.BrokemiaHelper/bigSpring.placements.name.down=Big Spring (Down)
+entities.BrokemiaHelper/bigSpring.placements.name.right=Big Spring (Right)
+entities.BrokemiaHelper/bigSpring.placements.name.left=Big Spring (Left)
+entities.BrokemiaHelper/bigSpring.placements.name.dashUp=Big Dash Spring (Up)
+entities.BrokemiaHelper/bigSpring.placements.name.dashDown=Big Dash Spring (Down)
+entities.BrokemiaHelper/bigSpring.placements.name.dashRight=Big Dash Spring (Right)
+entities.BrokemiaHelper/bigSpring.placements.name.dashLeft=Big Dash Spring (Left)
+entities.BrokemiaHelper/bigSpring.placements.description.up=An up-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.down=A down-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.right=A right-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.left=A left-facing spring with a changeable size.
+entities.BrokemiaHelper/bigSpring.placements.description.dashUp=An up-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashDown=A down-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashRight=A right-facing spring with a changeable size that only activates when the player is dashing.
+entities.BrokemiaHelper/bigSpring.placements.description.dashLeft=A left-facing spring with a changeable size that only activates when the player is dashing.
+
+entities.BrokemiaHelper/bigSpring.attributes.description.playerCanUse=Determines whether the player is able to interact with the spring.
+entities.BrokemiaHelper/bigSpring.attributes.description.ignoreHoldables=Determines whether holdables are able to interact with the spring.
+entities.BrokemiaHelper/bigSpring.attributes.description.ignoreRedBoosters=Determines whether the player is able to interact with the spring while in the red booster state.
+entities.BrokemiaHelper/bigSpring.attributes.description.orientation=The direction the spring is facing.
+entities.BrokemiaHelper/bigSpring.attributes.description.dashSpring=Whether the player must be dashing to interact with the spring.
+entities.BrokemiaHelper/bigSpring.attributes.description.sprite=The path to the textures for the spring.\nIf empty, defaults to the usual spring or dash spring sprites.\nPath should be relative to the Gameplay Atlas and should omit the 00, 01, etc at the end.
+entities.BrokemiaHelper/bigSpring.attributes.description.horizontalTexturePadding=How much padding the spring texture has on either side.\nThe vanilla spring has 4 pixels of padding.\nOnly relevant if the texture width is different from the spring width.
 
 # Cassette Cassette
 entities.brokemiahelper/cassetteCassette.placements.name.cassette_cassette_0=Cassette Cassette (0 - Blue)
@@ -84,18 +98,21 @@ entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.name.flag_synchron
 entities.BrokemiaHelper/CelesteNetFlagSynchronizer.placements.description.flag_synchronizer=A controller that ensures a specified flag has the same value for all players on CelesteNet while they are in a room with this controller.
 entities.BrokemiaHelper/CelesteNetFlagSynchronizer.attributes.description.flag=The flag to be synchronized.
 
-# Questionable Flag Controller
-entities.BrokemiaHelper/questionableFlagController.placements.name.controller=Questionable Flag Controller
-entities.BrokemiaHelper/questionableFlagController.placements.description.controller=A controller that sets a flag for something you really should not be setting flags for.\nFlag format is BrokemiaHelperFlag_WHICH_VALUE, with WHICH and VALUE being swapped out for their actual values.
-entities.BrokemiaHelper/questionableFlagController.attributes.description.which=What kind of flag to set.
-entities.BrokemiaHelper/questionableFlagController.attributes.description.onlyOnce=Whether the controller should only set the flag the first time it is loaded.
-
-# Dependency Flag Controller
-entities.BrokemiaHelper/dependencyFlagController.placements.name.controller=Dependency Flag Controller
-entities.BrokemiaHelper/dependencyFlagController.placements.description.controller=A controller that sets a flag if a given mod dependency is satisfied.
-entities.BrokemiaHelper/dependencyFlagController.attributes.description.name=The mod name to check for.
-entities.BrokemiaHelper/dependencyFlagController.attributes.description.version=The mod version to check for.
-entities.BrokemiaHelper/dependencyFlagController.attributes.description.flag=The flag to set if the mod is present (defaults to "Dependency_NAME_VERSION").
+# Dandelion
+entities.BrokemiaHelper/dandelion.placements.name.small=Dandelion (Small)
+entities.BrokemiaHelper/dandelion.placements.name.large=Dandelion (Large)
+entities.BrokemiaHelper/dandelion.placements.description.small=A small dandelion that scatters seeds when the player gets close.
+entities.BrokemiaHelper/dandelion.placements.description.large=A large dandelion that scatters seeds when the player gets close.
+entities.BrokemiaHelper/dandelion.attributes.description.seeds=The number of seeds to scatter.
+entities.BrokemiaHelper/dandelion.attributes.description.seedStartX=Where the seeds should start relative to the dandelion's center horizontally.
+entities.BrokemiaHelper/dandelion.attributes.description.seedStartY=Where the seeds should start relative to the dandelion's base vertically.
+entities.BrokemiaHelper/dandelion.attributes.description.seedTexture=The texture to use for the seeds.
+entities.BrokemiaHelper/dandelion.attributes.description.flyAwayWidth=The width of the area where the player can cause the dandelion to scatter seeds.
+entities.BrokemiaHelper/dandelion.attributes.description.flyAwayHeight=The height of the area where the player can cause the dandelion to scatter seeds.
+entities.BrokemiaHelper/dandelion.attributes.description.sprite=The sprite to use for the dandelion in the Sprites.xml.
+entities.BrokemiaHelper/dandelion.attributes.description.flipH=Whether the sprite should be flipped horizontally.
+entities.BrokemiaHelper/dandelion.attributes.description.flipV=Whether the sprite should be flipped vertically.
+entities.BrokemiaHelper/dandelion.attributes.description.depth=The depth of the entity.
 
 # Dash Spring
 entities.BrokemiaHelper/dashSpring.placements.name.up=Dash Spring (Up)
@@ -124,31 +141,54 @@ entities.BrokemiaHelper/dashSpringDown.attributes.description.spritePath=The pat
 entities.BrokemiaHelper/wallDashSpringRight.attributes.description.spritePath=The path to the textures for the spring.
 entities.BrokemiaHelper/wallDashSpringLeft.attributes.description.spritePath=The path to the textures for the spring.
 
-# Big Spring
-entities.BrokemiaHelper/bigSpring.placements.name.up=Big Spring (Up)
-entities.BrokemiaHelper/bigSpring.placements.name.down=Big Spring (Down)
-entities.BrokemiaHelper/bigSpring.placements.name.right=Big Spring (Right)
-entities.BrokemiaHelper/bigSpring.placements.name.left=Big Spring (Left)
-entities.BrokemiaHelper/bigSpring.placements.name.dashUp=Big Dash Spring (Up)
-entities.BrokemiaHelper/bigSpring.placements.name.dashDown=Big Dash Spring (Down)
-entities.BrokemiaHelper/bigSpring.placements.name.dashRight=Big Dash Spring (Right)
-entities.BrokemiaHelper/bigSpring.placements.name.dashLeft=Big Dash Spring (Left)
-entities.BrokemiaHelper/bigSpring.placements.description.up=An up-facing spring with a changeable size.
-entities.BrokemiaHelper/bigSpring.placements.description.down=A down-facing spring with a changeable size.
-entities.BrokemiaHelper/bigSpring.placements.description.right=A right-facing spring with a changeable size.
-entities.BrokemiaHelper/bigSpring.placements.description.left=A left-facing spring with a changeable size.
-entities.BrokemiaHelper/bigSpring.placements.description.dashUp=An up-facing spring with a changeable size that only activates when the player is dashing.
-entities.BrokemiaHelper/bigSpring.placements.description.dashDown=A down-facing spring with a changeable size that only activates when the player is dashing.
-entities.BrokemiaHelper/bigSpring.placements.description.dashRight=A right-facing spring with a changeable size that only activates when the player is dashing.
-entities.BrokemiaHelper/bigSpring.placements.description.dashLeft=A left-facing spring with a changeable size that only activates when the player is dashing.
+# Decal Blender
+entities.BrokemiaHelper/decalBlender.placements.name.blenderBg=Decal Blender (BG)
+entities.BrokemiaHelper/decalBlender.placements.name.blenderFg=Decal Blender (FG)
+entities.BrokemiaHelper/decalBlender.placements.description.blenderBg=Makes included decals use a different blend mode when rendering on each other.\nDefaults to background decal depth.
+entities.BrokemiaHelper/decalBlender.placements.description.blenderFg=Makes included decals use a different blend mode when rendering on each other.\nDefaults to foreground decal depth.
 
-entities.BrokemiaHelper/bigSpring.attributes.description.playerCanUse=Determines whether the player is able to interact with the spring.
-entities.BrokemiaHelper/bigSpring.attributes.description.ignoreHoldables=Determines whether holdables are able to interact with the spring.
-entities.BrokemiaHelper/bigSpring.attributes.description.ignoreRedBoosters=Determines whether the player is able to interact with the spring while in the red booster state.
-entities.BrokemiaHelper/bigSpring.attributes.description.orientation=The direction the spring is facing.
-entities.BrokemiaHelper/bigSpring.attributes.description.dashSpring=Whether the player must be dashing to interact with the spring.
-entities.BrokemiaHelper/bigSpring.attributes.description.sprite=The path to the textures for the spring.\nIf empty, defaults to the usual spring or dash spring sprites.\nPath should be relative to the Gameplay Atlas and should omit the 00, 01, etc at the end.
-entities.BrokemiaHelper/bigSpring.attributes.description.horizontalTexturePadding=How much padding the spring texture has on either side.\nThe vanilla spring has 4 pixels of padding.\nOnly relevant if the texture width is different from the spring width.
+entities.BrokemiaHelper/decalBlender.attributes.description.name=The mod name to check for.
+entities.BrokemiaHelper/decalBlender.attributes.description.decalNameFilter=Filter the affected decals based on their texture.\nUses regex.
+entities.BrokemiaHelper/decalBlender.attributes.description.alphaBlendFunction=How to combine the source and destination alpha component.
+entities.BrokemiaHelper/decalBlender.attributes.description.alphaDestinationBlend=What value to multiply with the destination alpha.
+entities.BrokemiaHelper/decalBlender.attributes.description.alphaSourceBlend=What value to multiply with the source alpha.
+entities.BrokemiaHelper/decalBlender.attributes.description.colorBlendFunction=How to combine the source and destination color components.
+entities.BrokemiaHelper/decalBlender.attributes.description.colorDestinationBlend=What value to multiply with the destination color.
+entities.BrokemiaHelper/decalBlender.attributes.description.colorSourceBlend=What value to multiply with the source color.
+entities.BrokemiaHelper/decalBlender.attributes.description.blendFactor=Color used with the BlendFactor blend option.
+entities.BrokemiaHelper/decalBlender.attributes.description.depth=Depth of the entity. The decals will all render at the same depth.
+
+# Dependency Flag Controller
+entities.BrokemiaHelper/dependencyFlagController.placements.name.controller=Dependency Flag Controller
+entities.BrokemiaHelper/dependencyFlagController.placements.description.controller=A controller that sets a flag if a given mod dependency is satisfied.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.name=The mod name to check for.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.version=The mod version to check for.
+entities.BrokemiaHelper/dependencyFlagController.attributes.description.flag=The flag to set if the mod is present (defaults to "Dependency_NAME_VERSION").
+
+# Floatier Space Block
+entities.BrokemiaHelper/floatierSpaceBlock.placements.name.floatier_space_block=Floatier Space Block
+entities.BrokemiaHelper/floatierSpaceBlock.placements.description.floatier_space_block=Floaty Space Block but with customizable values for many different parameters.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.disableSpawnOffset=Whether or not the entity should spawn without the random offset.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.floatinessMultiplier=A multiplier for how far the block sinks.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.tiletype=Determines the visual appearance of the wall.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.bounceBackMultiplier=A multiplier for how fast the block bounces back when dashed into.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.dashOffsetMultiplier=A multiplier for how far the block gets pushed back when dashed into.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.naturalFloatiness=A multiplier for how much the block naturally bobs up and down.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkAmount=The number of pixels the block will sink to when a player is riding it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkDelay=How long it takes for a block to begin rising again after a player steps off of it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.sinkSpeed=How fast the block sinks when a player is riding it.
+entities.BrokemiaHelper/floatierSpaceBlock.attributes.description.unsinkSpeed=How fast the block rises back to its normal position after a player steps off of it.
+
+# Flower Field
+entities.BrokemiaHelper/flowerField.placements.name.field=Flower Field
+entities.BrokemiaHelper/flowerField.placements.description.field=A randomly generated field of flowers. Can contain dandelions and decals.
+entities.BrokemiaHelper/flowerField.attributes.description.randomFlipH=Whether or not to randomly flip the flowers horizontally.
+entities.BrokemiaHelper/flowerField.attributes.description.flowerDensity=The chance of spawning a flower per pixel.
+entities.BrokemiaHelper/flowerField.attributes.description.randomSeed=The seed to use in generating the field. Leave blank for a random seed.
+entities.BrokemiaHelper/flowerField.attributes.description.smallDandelions=Whether to spawn small dandelions in the flower field.
+entities.BrokemiaHelper/flowerField.attributes.description.largeDandelions=Whether to spawn large dandelions in the flower field.
+entities.BrokemiaHelper/flowerField.attributes.description.decals=A comma separated list of decals to spawn in the flower field.
+entities.BrokemiaHelper/flowerField.attributes.description.depth=The depth of the entity.
 
 # Move Block Barrier
 entities.BrokemiaHelper/moveBlockBarrier.placements.name.barrier=Move Block Barrier
@@ -168,6 +208,74 @@ entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.stopNode=C
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.surfaceSoundIndex=Footstep sound when walking on the block.
 entities.BrokemiaHelper/nonBadelineMovingBlock.attributes.description.easing=How the speed of the block changes while moving between nodes.\nLinear moves at a constant speed. CubeIn is vanilla behavior.
 
+# Noodle Emitter
+entities.BrokemiaHelper/noodleEmitter.placements.name.emitter=Noodle Emitter
+entities.BrokemiaHelper/noodleEmitter.placements.description.emitter=Emits noodle creatures.
+entities.BrokemiaHelper/noodleEmitter.attributes.description.sprite=The sprite to be used for the emitter.
+entities.BrokemiaHelper/noodleEmitter.attributes.description.editorTexture=The texture displayed in Loenn.\nThis is just so you can line up the nodes right and has no effect in-game.
+
+# Questionable Flag Controller
+entities.BrokemiaHelper/questionableFlagController.placements.name.controller=Questionable Flag Controller
+entities.BrokemiaHelper/questionableFlagController.placements.description.controller=A controller that sets a flag for something you really should not be setting flags for.\nFlag format is BrokemiaHelperFlag_WHICH_VALUE, with WHICH and VALUE being swapped out for their actual values.
+entities.BrokemiaHelper/questionableFlagController.attributes.description.which=What kind of flag to set.
+entities.BrokemiaHelper/questionableFlagController.attributes.description.onlyOnce=Whether the controller should only set the flag the first time it is loaded.
+
+# Rain World Lizard
+entities.BrokemiaHelper/rwLizard.placements.name.lizard=Rain World Lizard
+
+# Tall Grass
+entities.BrokemiaHelper/tallGrass.placements.name.grass=Tall Grass
+entities.BrokemiaHelper/tallGrass.placements.description.grass=A row of grass sprites that shake when the player walks through them.
+entities.BrokemiaHelper/tallGrass.attributes.description.depth=The depth of the entity.
+entities.BrokemiaHelper/tallGrass.attributes.description.grassTexture=The texture to use for the grass.
+entities.BrokemiaHelper/tallGrass.attributes.description.grassSpreadTexture=The texture to show at the player's location, to make it look like the grass is being parted.
+entities.BrokemiaHelper/tallGrass.attributes.description.wiggleSpeed=How fast the grass wiggles. The higher the number, the less time the wiggles last.
+entities.BrokemiaHelper/tallGrass.attributes.description.wiggleFrequency=The number of wiggles the grass does.
+entities.BrokemiaHelper/tallGrass.attributes.description.minPlayerSpeed=How fast the player must be going for the grass to wiggle.
+entities.BrokemiaHelper/tallGrass.attributes.description.scaleMultiplier=How much the scale changes as the grass wiggles.
+entities.BrokemiaHelper/tallGrass.attributes.description.rotationMultiplier=How much the rotation changes as the grass wiggles (in radians).
+
+# Theo Respawn
+entities.BrokemiaHelper/theoRespawn.placements.name.respawn=Theo Respawn
+entities.BrokemiaHelper/theoRespawn.placements.description.respawn=When the player enters this room, a Theo Crystal will spawn at the Theo Respawn closest to the player.
+entities.BrokemiaHelper/theoRespawn.attributes.description.flag=The flag that must be active for this Theo Respawn to activate.
+
+# Thorn Growers
+entities.BrokemiaHelper/thornGrowers.placements.name.thornGrowers=Thorn Growers
+entities.BrokemiaHelper/thornGrowers.placements.description.thornGrowers=Procedurally generated tall thorny plants.\nBased on a plant of the same name in Rain World.
+entities.BrokemiaHelper/thornGrowers.attributes.description.randomSeed=The seed used to generate the thorn growers.\nLeaving this as 0 will automatically choose a seed (note that the automatic seed is load order dependent).
+entities.BrokemiaHelper/thornGrowers.attributes.description.depth=The depth of the thorn growers.\nBackground decals are 9000. Foreground decals are -10500.
+entities.BrokemiaHelper/thornGrowers.attributes.description.minGrowers=The minimum number of stalks to generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.maxGrowers=The maximum number of stalks to generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.clampGrowerPos=Whether growers can only generate within the bounding box horizontally.\nThe position of growers follows a gaussian distribution, so there's a low chance they might generate outside otherwise.
+entities.BrokemiaHelper/thornGrowers.attributes.description.heightFractionMin=The minimum length of the growers as a fraction of the height of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightFraction=A factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightVariation=A random factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.centerAngleRange=How much growers at the center can bend from perfectly vertical at the center of the bounding box (radians).\nThis is blended with "Edge Angle Range" based on how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.edgeAngleRange=How much growers at the edge can bend from perfectly vertical at the edges of the bounding box (radians).\nThis is blended with "Center Angle Range" based on how close the stalks are to the center of the bounding box.
+entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMin=The minimum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
+entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMax=The maximum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseColor=The color of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopColor=The color of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderMax=How much the stalks can deviate from a perfect arc.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderAcceleration=How fast the stalks can deviate from a perfect arc.\nKind of a "wiggliness" factor.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMin=The minimum thickness of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMax=The maximum thickness of the base of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMin=The minimum thickness of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMax=The maximum thickness of the top of the stalks.
+entities.BrokemiaHelper/thornGrowers.attributes.description.stalkThicknessDistribution=How the thickness of the stalks is distributed.\n"Linear" means all thicknesses are equally likely.\n"QuadIn" means thinner stalks are more common than thicker.\nBased on easing modes if you know what those are.
+entities.BrokemiaHelper/thornGrowers.attributes.description.hasThorns=Whether the growers have thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.baseThornColor=The color of the thorns near the base.
+entities.BrokemiaHelper/thornGrowers.attributes.description.topThornColor=The color of the thorns near the top.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornExtent=How far the thorns stick out from the stalk.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxLength=The maximum length of the thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinLength=The minimum length of the thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornBaseDist=The minimum distance from the base of the stalks that thorns can generate.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinSpacing=The minimum spacing between thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxSpacing=The maximum spacing between thorns.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornThickness=How thick the thorns are.
+entities.BrokemiaHelper/thornGrowers.attributes.description.thornDirection=Which angle thorns extend from the stalk before heading up (radians).
+
 # Troll Strawberry
 entities.BrokemiaHelper/trollStrawberry.placements.name.normal=Troll Strawberry
 entities.BrokemiaHelper/trollStrawberry.placements.description.normal=A strawberry that pops and disappears instead of being collected.
@@ -178,6 +286,12 @@ entities.BrokemiaHelper/trollStrawberry.placements.description.moon=A moon berry
 entities.BrokemiaHelper/trollStrawberry.attributes.description.winged=The troll strawberry attempts to vertically rise offscreen when the player dashes.
 entities.BrokemiaHelper/trollStrawberry.attributes.description.moon=Makes the troll strawberry render as a moon berry.\nDoes not work with wings or nodes.
 entities.BrokemiaHelper/trollStrawberry.attributes.description.reappear=Makes the troll strawberry reappear after the player "collects" it.
+
+# Universal Accelerator
+entities.BrokemiaHelper/universalAccelerator.placements.name.accelerator=Universal Accelerator
+entities.BrokemiaHelper/universalAccelerator.placements.description.accelerator=Accelerates the player or holdables at a constant rate once they touch the accelerator.
+entities.BrokemiaHelper/universalAccelerator.attributes.description.acceleration=How fast to accelerate the player.
+entities.BrokemiaHelper/universalAccelerator.attributes.description.terminalVelocity=The maximum speed this will accelerate the player at.
 
 # Vineinator
 entities.BrokemiaHelper/vineinator.placements.name.vine=Vineinator (Green Preset)
@@ -231,101 +345,14 @@ entities.BrokemiaHelper/vineinator.attributes.description.thornColor=The color o
 entities.BrokemiaHelper/vineinator.attributes.description.hangingVineColor=The color of the hanging vines.
 entities.BrokemiaHelper/vineinator.attributes.description.depth=The depth of the vines.\nBackground decals are 9000. Foreground decals are -10500.
 
-# Thorn Growers
-entities.BrokemiaHelper/thornGrowers.placements.name.thornGrowers=Thorn Growers
-entities.BrokemiaHelper/thornGrowers.placements.description.thornGrowers=Procedurally generated tall thorny plants.\nBased on a plant of the same name in Rain World.
-entities.BrokemiaHelper/thornGrowers.attributes.description.randomSeed=The seed used to generate the thorn growers.\nLeaving this as 0 will automatically choose a seed (note that the automatic seed is load order dependent).
-entities.BrokemiaHelper/thornGrowers.attributes.description.depth=The depth of the thorn growers.\nBackground decals are 9000. Foreground decals are -10500.
-entities.BrokemiaHelper/thornGrowers.attributes.description.minGrowers=The minimum number of stalks to generate.
-entities.BrokemiaHelper/thornGrowers.attributes.description.maxGrowers=The maximum number of stalks to generate.
-entities.BrokemiaHelper/thornGrowers.attributes.description.clampGrowerPos=Whether growers can only generate within the bounding box horizontally.\nThe position of growers follows a gaussian distribution, so there's a low chance they might generate outside otherwise.
-entities.BrokemiaHelper/thornGrowers.attributes.description.heightFractionMin=The minimum length of the growers as a fraction of the height of the bounding box.
-entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightFraction=A factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
-entities.BrokemiaHelper/thornGrowers.attributes.description.centerHeightVariation=A random factor added to the height of growers.\nThis scales with how close the stalks are to the center of the bounding box.
-entities.BrokemiaHelper/thornGrowers.attributes.description.centerAngleRange=How much growers at the center can bend from perfectly vertical at the center of the bounding box (radians).\nThis is blended with "Edge Angle Range" based on how close the stalks are to the center of the bounding box.
-entities.BrokemiaHelper/thornGrowers.attributes.description.edgeAngleRange=How much growers at the edge can bend from perfectly vertical at the edges of the bounding box (radians).\nThis is blended with "Center Angle Range" based on how close the stalks are to the center of the bounding box.
-entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMin=The minimum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
-entities.BrokemiaHelper/thornGrowers.attributes.description.angleFractionMax=The maximum amount growers will bend from perfectly vertical (radians).\nThis factor is used to randomly scale the blend of "Center Angle Range" and "Edge Angle Range".
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseColor=The color of the base of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopColor=The color of the top of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderMax=How much the stalks can deviate from a perfect arc.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkWanderAcceleration=How fast the stalks can deviate from a perfect arc.\nKind of a "wiggliness" factor.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMin=The minimum thickness of the base of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkBaseThicknessMax=The maximum thickness of the base of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMin=The minimum thickness of the top of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkTopThicknessMax=The maximum thickness of the top of the stalks.
-entities.BrokemiaHelper/thornGrowers.attributes.description.stalkThicknessDistribution=How the thickness of the stalks is distributed.\n"Linear" means all thicknesses are equally likely.\n"QuadIn" means thinner stalks are more common than thicker.\nBased on easing modes if you know what those are.
-entities.BrokemiaHelper/thornGrowers.attributes.description.hasThorns=Whether the growers have thorns.
-entities.BrokemiaHelper/thornGrowers.attributes.description.baseThornColor=The color of the thorns near the base.
-entities.BrokemiaHelper/thornGrowers.attributes.description.topThornColor=The color of the thorns near the top.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornExtent=How far the thorns stick out from the stalk.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxLength=The maximum length of the thorns.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinLength=The minimum length of the thorns.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornBaseDist=The minimum distance from the base of the stalks that thorns can generate.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornMinSpacing=The minimum spacing between thorns.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornMaxSpacing=The maximum spacing between thorns.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornThickness=How thick the thorns are.
-entities.BrokemiaHelper/thornGrowers.attributes.description.thornDirection=Which angle thorns extend from the stalk before heading up (radians).
 
-# Rain World Lizard
-entities.BrokemiaHelper/rwLizard.placements.name.lizard=Rain World Lizard
+## Triggers
 
-# Dandelion
-entities.BrokemiaHelper/dandelion.placements.name.small=Dandelion (Small)
-entities.BrokemiaHelper/dandelion.placements.name.large=Dandelion (Large)
-entities.BrokemiaHelper/dandelion.placements.description.small=A small dandelion that scatters seeds when the player gets close.
-entities.BrokemiaHelper/dandelion.placements.description.large=A large dandelion that scatters seeds when the player gets close.
-entities.BrokemiaHelper/dandelion.attributes.description.seeds=The number of seeds to scatter.
-entities.BrokemiaHelper/dandelion.attributes.description.seedStartX=Where the seeds should start relative to the dandelion's center horizontally.
-entities.BrokemiaHelper/dandelion.attributes.description.seedStartY=Where the seeds should start relative to the dandelion's base vertically.
-entities.BrokemiaHelper/dandelion.attributes.description.seedTexture=The texture to use for the seeds.
-entities.BrokemiaHelper/dandelion.attributes.description.flyAwayWidth=The width of the area where the player can cause the dandelion to scatter seeds.
-entities.BrokemiaHelper/dandelion.attributes.description.flyAwayHeight=The height of the area where the player can cause the dandelion to scatter seeds.
-entities.BrokemiaHelper/dandelion.attributes.description.sprite=The sprite to use for the dandelion in the Sprites.xml.
-entities.BrokemiaHelper/dandelion.attributes.description.flipH=Whether the sprite should be flipped horizontally.
-entities.BrokemiaHelper/dandelion.attributes.description.flipV=Whether the sprite should be flipped vertically.
-entities.BrokemiaHelper/dandelion.attributes.description.depth=The depth of the entity.
-
-# Flower Field
-entities.BrokemiaHelper/flowerField.placements.name.field=Flower Field
-entities.BrokemiaHelper/flowerField.placements.description.field=A randomly generated field of flowers. Can contain dandelions and decals.
-entities.BrokemiaHelper/flowerField.attributes.description.randomFlipH=Whether or not to randomly flip the flowers horizontally.
-entities.BrokemiaHelper/flowerField.attributes.description.flowerDensity=The chance of spawning a flower per pixel.
-entities.BrokemiaHelper/flowerField.attributes.description.randomSeed=The seed to use in generating the field. Leave blank for a random seed.
-entities.BrokemiaHelper/flowerField.attributes.description.smallDandelions=Whether to spawn small dandelions in the flower field.
-entities.BrokemiaHelper/flowerField.attributes.description.largeDandelions=Whether to spawn large dandelions in the flower field.
-entities.BrokemiaHelper/flowerField.attributes.description.decals=A comma separated list of decals to spawn in the flower field.
-entities.BrokemiaHelper/flowerField.attributes.description.depth=The depth of the entity.
-
-# Tall Grass
-entities.BrokemiaHelper/tallGrass.placements.name.grass=Tall Grass
-entities.BrokemiaHelper/tallGrass.placements.description.grass=A row of grass sprites that shake when the player walks through them.
-entities.BrokemiaHelper/tallGrass.attributes.description.depth=The depth of the entity.
-entities.BrokemiaHelper/tallGrass.attributes.description.grassTexture=The texture to use for the grass.
-entities.BrokemiaHelper/tallGrass.attributes.description.grassSpreadTexture=The texture to show at the player's location, to make it look like the grass is being parted.
-entities.BrokemiaHelper/tallGrass.attributes.description.wiggleSpeed=How fast the grass wiggles. The higher the number, the less time the wiggles last.
-entities.BrokemiaHelper/tallGrass.attributes.description.wiggleFrequency=The number of wiggles the grass does.
-entities.BrokemiaHelper/tallGrass.attributes.description.minPlayerSpeed=How fast the player must be going for the grass to wiggle.
-entities.BrokemiaHelper/tallGrass.attributes.description.scaleMultiplier=How much the scale changes as the grass wiggles.
-entities.BrokemiaHelper/tallGrass.attributes.description.rotationMultiplier=How much the rotation changes as the grass wiggles (in radians).
-
-# Theo Respawn
-entities.BrokemiaHelper/theoRespawn.placements.name.respawn=Theo Respawn
-entities.BrokemiaHelper/theoRespawn.placements.description.respawn=When the player enters this room, a Theo Crystal will spawn at the Theo Respawn closest to the player.
-entities.BrokemiaHelper/theoRespawn.attributes.description.flag=The flag that must be active for this Theo Respawn to activate.
-
-# Noodle Emitter
-entities.BrokemiaHelper/noodleEmitter.placements.name.emitter=Noodle Emitter
-entities.BrokemiaHelper/noodleEmitter.placements.description.emitter=Emits noodle creatures.
-entities.BrokemiaHelper/noodleEmitter.attributes.description.sprite=The sprite to be used for the emitter.
-entities.BrokemiaHelper/noodleEmitter.attributes.description.editorTexture=The texture displayed in Loenn.\nThis is just so you can line up the nodes right and has no effect in-game.
-
-# Universal Accelerator
-entities.BrokemiaHelper/universalAccelerator.placements.name.accelerator=Universal Accelerator
-entities.BrokemiaHelper/universalAccelerator.placements.description.accelerator=Accelerates the player or holdables at a constant rate once they touch the accelerator.
-entities.BrokemiaHelper/universalAccelerator.attributes.description.acceleration=How fast to accelerate the player.
-entities.BrokemiaHelper/universalAccelerator.attributes.description.terminalVelocity=The maximum speed this will accelerate the player at.
-
+# Neutral Jump Death Penalty Trigger
+triggers.BrokemiaHelper/neutralDeathPenalty.placements.name.trigger=Neutral Jump Death Penalty
+triggers.BrokemiaHelper/neutralDeathPenalty.placements.description.trigger=Enables/disables killing the player if they neutral jump.
+triggers.BrokemiaHelper/neutralDeathPenalty.attributes.description.enable=Whether the player should die if they neutral jump.
+triggers.BrokemiaHelper/neutralDeathPenalty.attributes.description.flag=Flag that must be active for the trigger to activate.
 
 # Persistent Mini Textbox Trigger
 triggers.BrokemiaHelper/persistentMiniTextboxTrigger.placements.name.trigger=Persistent MiniTextbox
@@ -345,9 +372,3 @@ triggers.BrokemiaHelper/tronStateTrigger.attributes.description.color=The color 
 triggers.BrokemiaHelper/tronStateUntrigger.placements.name.trigger=Stop Tron State
 triggers.BrokemiaHelper/tronStateUntrigger.placements.description.trigger=Changes the player from the Tron state back into the normal state.
 triggers.BrokemiaHelper/tronStateUntrigger.attributes.description.onlyOnce=Whether the trigger should only work once per room load.
-
-# Neutral Jump Death Penalty Trigger
-triggers.BrokemiaHelper/neutralDeathPenalty.placements.name.trigger=Neutral Jump Death Penalty
-triggers.BrokemiaHelper/neutralDeathPenalty.placements.description.trigger=Enables/disables killing the player if they neutral jump.
-triggers.BrokemiaHelper/neutralDeathPenalty.attributes.description.enable=Whether the player should die if they neutral jump.
-triggers.BrokemiaHelper/neutralDeathPenalty.attributes.description.flag=Flag that must be active for the trigger to activate.
