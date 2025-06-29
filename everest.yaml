@@ -1,5 +1,5 @@
 - Name: BrokemiaHelper
-  Version: 1.8.2
+  Version: 1.8.3
   DLL: bin/BrokemiaHelper.dll
   Dependencies:
     - Name: Everest
@@ -7,3 +7,5 @@
   OptionalDependencies:
     - Name: CelesteNet.Client
       Version: 2.0.0
+    - Name: CommunalHelper
+      Version: 1.24.1
