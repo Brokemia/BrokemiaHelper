@@ -22,8 +22,8 @@ namespace BrokemiaHelper {
             "Celeste.Mod.CommunalHelper.Entities.MoveSwapBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Celeste.Mod.CommunalHelper.Entities.CassetteMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             "Celeste.Mod.CommunalHelper.Entities.DreamMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Celeste.Mod.CommunalHelper.Entities.ConnectedStuff.EquationMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
-            "Celeste.Mod.CommunalHelper.ConnectedMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Celeste.Mod.CommunalHelper.Entities.EquationMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+            "Celeste.Mod.CommunalHelper.Entities.ConnectedMoveBlock, CommunalHelper, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             // Crystalline Helper
             "vitmod.VitMoveBlock, vitmod, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
             // Dzhake Helper
