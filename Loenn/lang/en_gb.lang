@@ -239,7 +239,8 @@ entities.BrokemiaHelper/tallGrass.attributes.description.rotationMultiplier=How 
 entities.BrokemiaHelper/theoRespawn.placements.name.respawn=Theo Respawn
 entities.BrokemiaHelper/theoRespawn.placements.description.respawn=When the player enters this room, a Theo Crystal will spawn at the Theo Respawn closest to the player.
 entities.BrokemiaHelper/theoRespawn.attributes.description.flag=The flag that must be active for this Theo Respawn to activate.
-entities.BrokemiaHelper/theoRespawn.attributes.description.entityToSpawn=Which entity to spawn. Supports theoCrystal and modded entities, no other vanilla entities.\nLacks properties to configure the entity, so many will be broken with this option.
+entities.BrokemiaHelper/theoRespawn.attributes.description.entityToSpawn=Which entity to spawn. Supports theoCrystal and modded entities, no other vanilla entities.
+entities.BrokemiaHelper/theoRespawn.attributes.description.entityData=List of attributes to set in the spawned entity. Only used when spawning modded entities.\nExample: allowThrowingOffscreen:true
 
 # Thorn Growers
 entities.BrokemiaHelper/thornGrowers.placements.name.thornGrowers=Thorn Growers

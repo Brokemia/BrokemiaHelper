@@ -8,7 +8,30 @@ respawn.placements = {
     name = "respawn",
     data = {
         flag = "",
-        entityToSpawn = "theoCrystal"
+        entityToSpawn = "theoCrystal",
+        entityData = ""
+    }
+}
+respawn.fieldOrder = {
+    "x", "y",
+    "entityToSpawn", "entityData",
+    "flag"
+}
+
+respawn.fieldInformation = {
+    entityData = {
+        fieldType = "list",
+        elementDefault = ":",
+        elementOptions = {        
+            fieldType = "list",
+            elementDefault = "",
+            elementSeparator = ":",
+            minimumElements = 2,
+            maximumElements = 2,
+            elementOptions = {        
+                fieldType = "string"
+            }
+        }
     }
 }
 
