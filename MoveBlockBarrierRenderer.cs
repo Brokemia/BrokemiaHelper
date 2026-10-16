@@ -210,7 +210,7 @@ namespace BrokemiaHelper {
                     Vector2 vector2 = edge.Parent.Position + edge.B;
                     for (int i = 0; i <= edge.Length; i++) {
                         Vector2 vector = value + edge.Normal * i;
-                        Draw.Line(vector, vector + edge.Perpendicular * edge.Wave[i], Color.Purple);
+                        Draw.Line(vector, Calc.Round(vector + edge.Perpendicular * edge.Wave[i]), Color.Purple);
                     }
                 }
             }
